@@ -1,0 +1,89 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Compiler.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:views="clr-namespace:Compiler.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Compiler.Views.MainWindowView"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Compiler">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <StackPanel>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="Файл">
+                    <MenuItem Header="Создать" Command="{Binding Create}" />
+                    <MenuItem Header="Открыть" Command="{Binding Open}" />
+                    <MenuItem Header="Сохранить" Command="{Binding Save}" />
+                    <MenuItem Header="Сохранить как" Command="{Binding SaveAs}" />
+                    <MenuItem Header="Выход" Command="{Binding Exit}" />
+                </MenuItem>
+                <MenuItem Header="Правка">
+                    <MenuItem Header="Отменить" Command="{Binding Undo}" />
+                    <MenuItem Header="Повторить" Command="{Binding Redo}" />
+                    <MenuItem Header="Вырезать" Command="{Binding Cut}" />
+                    <MenuItem Header="Копировать" Command="{Binding Copy}" />
+                    <MenuItem Header="Вставить" Command="{Binding Paste}" />
+                    <MenuItem Header="Удалить" Command="{Binding Delete}" />
+                    <MenuItem Header="Выделить все" Command="{Binding SelectAll}" />
+                </MenuItem>
+                <!-- <MenuItem Header="Текст"> -->
+                <!--     <MenuItem Header="Постановка задачи" /> -->
+                <!--     <MenuItem Header="Грамматика" /> -->
+                <!--     <MenuItem Header="Классификация грамматики" /> -->
+                <!--     <MenuItem Header="Метод анализа" /> -->
+                <!--     <MenuItem Header="Диагностика и нейтрализация ошибок" /> -->
+                <!--     <MenuItem Header="Текстовый пример" /> -->
+                <!--     <MenuItem Header="Список литературы" /> -->
+                <!--     <MenuItem Header="Исходный код программы" /> -->
+                <!-- </MenuItem> -->
+                <MenuItem Header="Пуск" />
+                <MenuItem Header="Справка">
+                    <MenuItem Header="Вызов справки" Command="{Binding CallDocs}" />
+                    <MenuItem Header="О программе" Command="{Binding ShowAboutProgram}" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <TabControl SelectedIndex="{Binding CurrentEditorIndex}" ItemsSource="{Binding Editors}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TabItem>
+                        <TabItem.HeaderTemplate>
+                            <DataTemplate x:DataType="vm:EditorViewModel">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding FileName}" />
+                                    <Button Command="{Binding Close}">
+                                        <materialIcons:MaterialIcon Kind="WindowClose" />
+                                    </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </TabItem.HeaderTemplate>
+                        <views:EditorView DataContext="{Binding .}" />
+                    </TabItem>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <!-- <TabControl.ItemTemplate> -->
+            <!--     <DataTemplate> -->
+            <!--         <StackPanel Orientation="Horizontal"> -->
+            <!--             <TextBlock Text="{Binding FileName}" /> -->
+            <!--             <Button Command="{Binding Close}"> -->
+            <!--                 <materialIcons:MaterialIcon Kind="WindowClose" /> -->
+            <!--             </Button> -->
+            <!--         </StackPanel> -->
+            <!--     </DataTemplate> -->
+            <!-- </TabControl.ItemTemplate> -->
+            <!-- <TabControl.ContentTemplate> -->
+            <!--     <DataTemplate x:DataType="vm:EditorViewModel"> -->
+            <!--         <v:EditorView DataContext="{Binding .}" /> -->
+            <!--     </DataTemplate> -->
+            <!-- </TabControl.ContentTemplate> -->
+        </TabControl>
+    </StackPanel>
+</Window>
