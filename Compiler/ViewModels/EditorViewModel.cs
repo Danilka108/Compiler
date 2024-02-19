@@ -1,12 +1,8 @@
-using System;
 using System.IO;
-using System.IO.Enumeration;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using DynamicData.Kernel;
-using Microsoft.VisualBasic;
+using AvaloniaEdit.Document;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -17,7 +13,21 @@ public class EditorViewModel : ViewModelBase
     // FIX 
     private readonly MainWindowViewModel _parent;
 
-    public string? FilePath { get; protected set; }
+    private ITextSource? _latestSavedDocument;
+
+    private TextDocument? _document = null;
+
+    public TextDocument? Document
+    {
+        get => _document;
+        set
+        {
+            _latestSavedDocument = value?.CreateSnapshot();
+            this.RaiseAndSetIfChanged(ref _document, value);
+        }
+    }
+
+    [Reactive] public string? FilePath { get; private set; }
 
     public string? FileName => Path.GetFileName(FilePath);
 
@@ -27,26 +37,17 @@ public class EditorViewModel : ViewModelBase
 
     public readonly Interaction<string?, string?> SaveFileAs;
 
-    private readonly Subject<Unit> _undo;
-    public readonly IObservable<Unit> UndoAction;
+    public Interaction<Unit, Unit> DoCut { get; } = new();
 
-    private readonly Subject<Unit> _redo;
-    public readonly IObservable<Unit> RedoAction;
+    public Interaction<Unit, Unit> DoCopy { get; } = new();
 
-    private readonly Subject<Unit> _cut;
-    public readonly IObservable<Unit> CutAction;
+    public Interaction<Unit, Unit> DoPaste { get; } = new();
 
-    private readonly Subject<Unit> _copy;
-    public readonly IObservable<Unit> CopyAction;
+    public Interaction<Unit, Unit> DoDelete { get; } = new();
 
-    private readonly Subject<Unit> _paste;
-    public readonly IObservable<Unit> PasteAction;
+    public Interaction<Unit, Unit> DoSelectAll { get; } = new();
 
-    private readonly Subject<Unit> _delete;
-    public readonly IObservable<Unit> DeleteAction;
-
-    private readonly Subject<Unit> _selectAll;
-    public readonly IObservable<Unit> SelectAllAction;
+    public Interaction<Unit, bool?> ConfirmSave { get; } = new();
 
     public EditorViewModel(MainWindowViewModel parent) : this(parent, null)
     {
@@ -57,32 +58,29 @@ public class EditorViewModel : ViewModelBase
         _parent = parent;
         FilePath = filePath;
 
-        Close = ReactiveCommand.Create(() => _parent.CloseEditor(this));
+        Close = ReactiveCommand.CreateFromTask(OnClose);
 
         SaveFile = new Interaction<string, Unit?>();
         SaveFileAs = new Interaction<string?, string?>();
-
-        _undo = new Subject<Unit>();
-        UndoAction = _undo.AsObservable();
-
-        _redo = new Subject<Unit>();
-        RedoAction = _undo.AsObservable();
-
-        _cut = new Subject<Unit>();
-        CutAction = _cut.AsObservable();
-
-        _copy = new Subject<Unit>();
-        CopyAction = _copy.AsObservable();
-
-        _paste = new Subject<Unit>();
-        PasteAction = _paste.AsObservable();
-
-        _delete = new Subject<Unit>();
-        DeleteAction = _delete.AsObservable();
-
-        _selectAll = new Subject<Unit>();
-        SelectAllAction = _selectAll.AsObservable();
     }
+
+    private async Task OnClose()
+    {
+        if (Document?.Text == _latestSavedDocument?.Text && FileName != null)
+        {
+            _parent.CloseEditor(this);
+            return;
+        }
+
+        var shouldBeSaved = await ConfirmSave.Handle(Unit.Default);
+
+        if (shouldBeSaved == true)
+        {
+            await Save();
+            _parent.CloseEditor(this);
+        }
+    }
+
 
     public async Task Save()
     {
@@ -93,11 +91,7 @@ public class EditorViewModel : ViewModelBase
         }
 
         var result = await SaveFile.Handle(FilePath);
-
-        if (result == null)
-        {
-            // TODO
-        }
+        if (result != null) _latestSavedDocument = Document?.CreateSnapshot();
     }
 
     public async Task SaveAs()
@@ -107,45 +101,52 @@ public class EditorViewModel : ViewModelBase
         if (result != null)
         {
             FilePath = result;
-        }
-        else
-        {
-            // TODO
+            _latestSavedDocument = Document?.CreateSnapshot();
         }
     }
 
     public void Undo()
     {
-        _undo.OnNext(Unit.Default);
+        if (Document == null) return;
+        if (!Document.UndoStack.CanUndo)
+            // TODO
+            return;
+
+        Document.UndoStack.Undo();
     }
 
     public void Redo()
     {
-        _redo.OnNext(Unit.Default);
+        if (Document == null) return;
+        if (!Document.UndoStack.CanRedo)
+            // TODO
+            return;
+
+        Document.UndoStack.Redo();
     }
 
-    public void Cut()
+    public async Task Cut()
     {
-        _cut.OnNext(Unit.Default);
+        await DoCut.Handle(Unit.Default);
     }
 
-    public void Copy()
+    public async Task Copy()
     {
-        _copy.OnNext(Unit.Default);
+        await DoCopy.Handle(Unit.Default);
     }
 
-    public void Paste()
+    public async Task Paste()
     {
-        _paste.OnNext(Unit.Default);
+        await DoPaste.Handle(Unit.Default);
     }
 
-    public void Delete()
+    public async Task Delete()
     {
-        _delete.OnNext(Unit.Default);
+        await DoDelete.Handle(Unit.Default);
     }
 
-    public void SelectAll()
+    public async Task SelectAll()
     {
-        _selectAll.OnNext(Unit.Default);
+        await DoSelectAll.Handle(Unit.Default);
     }
 }

@@ -80,7 +80,7 @@ public class FileManager(IStorageProvider storageProvider)
 
         return new FilePickerSaveOptions
         {
-            Title = "Save file", SuggestedStartLocation = startLocation, SuggestedFileName = prevFile?.Name
+            Title = "Save file", SuggestedStartLocation = startLocation, SuggestedFileName = prevFile?.Name,
         };
     }
 

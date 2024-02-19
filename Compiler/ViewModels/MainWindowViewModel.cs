@@ -50,9 +50,11 @@ public class MainWindowViewModel : ViewModelBase
     private readonly ObservableCollection<EditorViewModel> _editors = [];
     public ReadOnlyObservableCollection<EditorViewModel> Editors => new(_editors);
 
+    private int _currentEditorIndex = -1;
+
     [Reactive] public int CurrentEditorIndex { get; set; } = -1;
 
-    public EditorViewModel? CurrentEditor => CurrentEditorIndex != -1 ? Editors[CurrentEditorIndex] : null;
+    public EditorViewModel? CurrentEditor => CurrentEditorIndex >= 0 ? Editors[CurrentEditorIndex] : null;
 
     // public bool HasEditors => CurrentEditor != null;
 
@@ -84,13 +86,15 @@ public class MainWindowViewModel : ViewModelBase
     public void CloseEditor(EditorViewModel editor)
     {
         // Use lambda or comparator
-        var editorIndex = _editors.IndexOf(editor);
+        var editorIndex = Editors.IndexOf(editor);
         if (editorIndex < 0) return;
 
         if (editor.FilePath == CurrentEditor?.FilePath)
         {
-            CurrentEditorIndex = editorIndex - 1 < 0 ? 0 : editorIndex - 1;
+            // CurrentEditorIndex = editorIndex - 1 < 0 ? 0 : editorIndex - 1;
+            var nextEditor = Editors[editorIndex - 1 < 0 ? 0 : editorIndex - 1];
             _editors.RemoveAt(editorIndex);
+            CurrentEditorIndex = _editors.IndexOf(nextEditor);
         }
         else if (CurrentEditor != null)
         {
@@ -98,6 +102,11 @@ public class MainWindowViewModel : ViewModelBase
             _editors.RemoveAt(editorIndex);
             CurrentEditorIndex = _editors.IndexOf(currentEditor);
         }
+    }
+
+    public async Task CloseAll()
+    {
+        foreach (var editor in Editors) await editor.Close.Execute();
     }
 
     private void ExecuteCreateFile()
@@ -108,6 +117,8 @@ public class MainWindowViewModel : ViewModelBase
     private async Task ExecuteOpenFile()
     {
         var fileName = await OpenFile.Handle(Unit.Default);
+        if (fileName == null) return;
+
         _editors.Add(new EditorViewModel(this, fileName));
     }
 

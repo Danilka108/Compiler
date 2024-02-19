@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -8,6 +10,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 using AvaloniaEdit;
+using AvaloniaEdit.Document;
 using Compiler.ViewModels;
 using ReactiveUI;
 
@@ -33,37 +36,70 @@ public partial class EditorView : ReactiveUserControl<EditorViewModel>
 
         _textEditor = this.FindControl<TextEditor>("TextEditor")!;
 
-        var storageProvider = (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
-            .MainWindow.StorageProvider;
+        var mainWindow = (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
+            .MainWindow;
+        var storageProvider = mainWindow.StorageProvider;
         _fileManager = new FileManager(storageProvider);
 
         this.WhenActivated((d) =>
         {
-            this.WhenAnyValue(v => v.ViewModel).WhereNotNull().SelectMany(async vm =>
+            this.WhenAnyValue(v => v.ViewModel)
+                .WhereNotNull()
+                .Where(vm => vm.Document == null)
+                .SelectMany(ReadFile)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Do(content =>
                 {
-                    if (vm.FilePath != null)
-                        return await _fileManager.TryRead(vm.FilePath);
-                    return null;
-                }).ObserveOn(RxApp.MainThreadScheduler).Subscribe(content =>
-                {
-                    _textEditor.Document.UndoStack.ClearAll();
-                    _textEditor.Text = content;
-                })
-                .DisposeWith(d);
+                    var document = new TextDocument();
+                    document.BeginUpdate();
+                    document.Text = content ?? "";
+                    document.EndUpdate();
+
+                    ViewModel!.Document = document;
+                }).Subscribe().DisposeWith(d);
 
             this.BindInteraction(ViewModel, vm => vm.SaveFile, SaveFile).DisposeWith(d);
             this.BindInteraction(ViewModel, vm => vm.SaveFileAs, SaveFileAs).DisposeWith(d);
-
-            this.WhenAction(vm => vm.RedoAction).Subscribe(_ => { _textEditor.Redo(); });
-            this.WhenAction(vm => vm.UndoAction).Subscribe(_ => { _textEditor.Undo(); });
-            this.WhenAction(vm => vm.CutAction).Subscribe(_ => { _textEditor.Cut(); });
-            this.WhenAction(vm => vm.CopyAction).Subscribe(_ => { _textEditor.Copy(); });
-            this.WhenAction(vm => vm.PasteAction).Subscribe(_ => { _textEditor.Paste(); });
-            this.WhenAction(vm => vm.DeleteAction).Subscribe(_ => { _textEditor.Delete(); });
-            this.WhenAction(vm => vm.SelectAllAction).Subscribe(_ => { _textEditor.SelectAll(); });
+            this.BindInteraction(ViewModel, vm => vm.DoCut, async ctx =>
+            {
+                _textEditor.Cut();
+                ctx.SetOutput(Unit.Default);
+            });
+            this.BindInteraction(ViewModel, vm => vm.DoCopy, async ctx =>
+            {
+                _textEditor.Copy();
+                ctx.SetOutput(Unit.Default);
+            });
+            this.BindInteraction(ViewModel, vm => vm.DoPaste, async ctx =>
+            {
+                _textEditor.Paste();
+                ctx.SetOutput(Unit.Default);
+            });
+            this.BindInteraction(ViewModel, vm => vm.DoDelete, async ctx =>
+            {
+                _textEditor.Delete();
+                ctx.SetOutput(Unit.Default);
+            });
+            this.BindInteraction(ViewModel, vm => vm.DoSelectAll, async ctx =>
+            {
+                _textEditor.SelectAll();
+                ctx.SetOutput(Unit.Default);
+            });
+            this.BindInteraction(ViewModel, vm => vm.ConfirmSave, async ctx =>
+            {
+                var confirmWindow = new ConfirmWindowView(ViewModel.FileName);
+                var result = await confirmWindow.ShowDialog<bool?>(mainWindow);
+                ctx.SetOutput(result);
+            });
         });
     }
 
+    private async Task<string?> ReadFile(EditorViewModel? vm)
+    {
+        if (vm?.FilePath != null)
+            return await _fileManager.TryRead(vm.FilePath);
+        return null;
+    }
 
     private async Task SaveFile(IInteractionContext<string, Unit?> context)
     {

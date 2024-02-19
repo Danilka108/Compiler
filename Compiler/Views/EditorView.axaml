@@ -10,5 +10,13 @@
         <vm:EditorViewModel />
     </Design.DataContext>
 
-    <avaloniaEdit:TextEditor Name="TextEditor" />
+    <Grid RowDefinitions="Auto, Auto, *">
+        <avaloniaEdit:TextEditor Grid.Row="0"
+                                 VerticalScrollBarVisibility="Auto"
+                                 x:DataType="vm:EditorViewModel" ShowLineNumbers="True" Name="TextEditor"
+                                 Document="{Binding Document}" />
+        <GridSplitter Grid.Row="1" Height="5" Background="LightGray" HorizontalAlignment="Stretch" />
+        <DataGrid />
+
+    </Grid>
 </UserControl>

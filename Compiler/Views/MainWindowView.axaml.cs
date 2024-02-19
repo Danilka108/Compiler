@@ -1,6 +1,8 @@
+using System;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.ReactiveUI;
 using Compiler.ViewModels;
 using ReactiveUI;
@@ -13,6 +15,8 @@ public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>
 
     public MainWindowView()
     {
+        Closing += OnClosing;
+
         InitializeComponent();
 
         _fileManager = new FileManager(StorageProvider);
@@ -24,6 +28,14 @@ public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>
             this.BindInteraction(ViewModel, vm => vm.OpenDocs, OpenDocs).DisposeWith(d);
             this.BindInteraction(ViewModel, vm => vm.OpenAboutProgram, OpenAboutProgram).DisposeWith(d);
         });
+    }
+
+    private void OnClosing(object? sender, WindowClosingEventArgs windowClosingEventArgs)
+    {
+        Task.Run(async () =>
+        {
+            if (ViewModel != null) await ViewModel.CloseAll();
+        }).Wait();
     }
 
     private async Task OpenFile(IInteractionContext<Unit, string?> context)
