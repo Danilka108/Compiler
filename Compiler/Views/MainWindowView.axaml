@@ -4,11 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-        xmlns:views="clr-namespace:Compiler.Views"
+        xmlns:lang="clr-namespace:Compiler.Lang"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Compiler.Views.MainWindowView"
-        x:DataType="vm:MainWindowViewModel"
-        xmlns:local="clr-namespace:Compiler"
         Icon="/Assets/avalonia-logo.ico"
         Title="CrabLang IDE">
 
@@ -16,100 +14,143 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Window.Resources>
-        <local:DefaultFileNameConverter x:Key="DefaultFileNameConverter" />
-    </Window.Resources>
+    <Window.KeyBindings>
+        <KeyBinding x:DataType="vm:MainWindowViewModel" Gesture="Ctrl+OemPlus" Command="{Binding ZoomIn}" />
+        <KeyBinding x:DataType="vm:MainWindowViewModel" Gesture="Ctrl+OemMinus" Command="{Binding ZoomOut}" />
+        <KeyBinding x:DataType="vm:MainWindowViewModel" Gesture="Ctrl+S" Command="{Binding Save}" />
+    </Window.KeyBindings>
 
-    <StackPanel>
-        <DockPanel>
+    <Grid Name="DragDropRegion" x:DataType="vm:MainWindowViewModel" RowDefinitions="Auto, Auto, *">
+        <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="Файл">
-                    <MenuItem Header="Создать" Command="{Binding Create}" />
-                    <MenuItem Header="Открыть" Command="{Binding Open}" />
-                    <MenuItem Header="Сохранить" Command="{Binding Save}" />
-                    <MenuItem Header="Сохранить как" Command="{Binding SaveAs}" />
-                    <MenuItem Header="Выход" Command="{Binding Exit}" />
+                <MenuItem Header="{x:Static lang:Resources.FileMenuItemHeader}">
+                    <MenuItem Header="{x:Static lang:Resources.CreateMenuItemHeader}"
+                              Command="{Binding Create}" />
+                    <MenuItem Header="{x:Static lang:Resources.OpenMenuItemHeader}" Command="{Binding Open}" />
+                    <MenuItem Header="{x:Static lang:Resources.SaveMenuItemHeader}" Command="{Binding Save}" />
+                    <MenuItem Header="{x:Static lang:Resources.SaveAsMenuItemHeader}"
+                              Command="{Binding SaveAs}" />
+                    <MenuItem Header="{x:Static lang:Resources.ExitMenuItemHeader}" Command="{Binding Exit}" />
                 </MenuItem>
-                <MenuItem Header="Правка">
-                    <MenuItem Header="Отменить" Command="{Binding Undo}" />
-                    <MenuItem Header="Повторить" Command="{Binding Redo}" />
-                    <MenuItem Header="Вырезать" Command="{Binding Cut}" />
-                    <MenuItem Header="Копировать" Command="{Binding Copy}" />
-                    <MenuItem Header="Вставить" Command="{Binding Paste}" />
-                    <MenuItem Header="Удалить" Command="{Binding Delete}" />
-                    <MenuItem Header="Выделить все" Command="{Binding SelectAll}" />
+
+                <MenuItem Header="{x:Static lang:Resources.EditMenuItemHeader}">
+                    <MenuItem Header="{x:Static lang:Resources.UndoMenuItemHeader}" Command="{Binding Undo}" />
+                    <MenuItem Header="{x:Static lang:Resources.RedoMenuItemHeader}" Command="{Binding Redo}" />
+                    <MenuItem Header="{x:Static lang:Resources.CutMenuItemHeader}" Command="{Binding Cut}" />
+                    <MenuItem Header="{x:Static lang:Resources.CopyMenuItemHeader}" Command="{Binding Copy}" />
+                    <MenuItem Header="{x:Static lang:Resources.PasteMenuItemHeader}" Command="{Binding Paste}" />
+                    <MenuItem Header="{x:Static lang:Resources.DeleteMenuItemHeader}"
+                              Command="{Binding Delete}" />
+                    <MenuItem Header="{x:Static lang:Resources.SelectAllMenuItemHeader}"
+                              Command="{Binding SelectAll}" />
                 </MenuItem>
-                <MenuItem Header="Текст">
-                    <MenuItem Header="Постановка задачи" />
-                    <MenuItem Header="Грамматика" />
-                    <MenuItem Header="Классификация грамматики" />
-                    <MenuItem Header="Метод анализа" />
-                    <MenuItem Header="Диагностика и нейтрализация ошибок" />
-                    <MenuItem Header="Текстовый пример" />
-                    <MenuItem Header="Список литературы" />
-                    <MenuItem Header="Исходный код программы" />
+
+                <MenuItem Header="{x:Static lang:Resources.TextMenuItemHeader}">
+                    <MenuItem.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical" />
+                        </ItemsPanelTemplate>
+                    </MenuItem.ItemsPanel>
+
+                    <MenuItem Header="{x:Static lang:Resources.ProblemFormulationMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.GrammarMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.GrammarClassificationMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.AnalysisMethodMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.DiagnosticNeutralizationMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.TextExampleMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.BibliographyMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.SourceCodeMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.TextSizeMenuItemHeader}">
+                        <MenuItem Name="IncreaseTextSizeMenuItem"
+                                  Header="{x:Static lang:Resources.IncreaseTextSizeMenuItemHeader}"
+                                  Command="{Binding ZoomIn}" />
+                        <MenuItem Name="DecreaseTextSizeMenuItem"
+                                  Header="{x:Static lang:Resources.DecreaseTextSizeMenuItemHeader}"
+                                  Command="{Binding ZoomOut}" />
+                    </MenuItem>
+                    <MenuItem Header="Lang">
+                        <MenuItem Header="English" Click="SetEnglish" />
+                        <MenuItem Header="Русский" Click="SetRussian" />
+                    </MenuItem>
                 </MenuItem>
-                <MenuItem Header="Пуск" />
-                <MenuItem Header="Справка">
-                    <MenuItem Header="Вызов справки" Command="{Binding CallDocs}" />
-                    <MenuItem Header="О программе" Command="{Binding ShowAboutProgram}" />
+
+                <MenuItem Header="{x:Static lang:Resources.RunMenuItemHeader}" Command="{Binding Run}" />
+
+                <MenuItem Header="{x:Static lang:Resources.DocsItemHeader}">
+                    <MenuItem Header="{x:Static lang:Resources.CallDocsItemHeader}" Command="{Binding CallDocs}" />
+                    <MenuItem Header="{x:Static lang:Resources.AboutProgramItemHeader}"
+                              Command="{Binding ShowAboutProgram}" />
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <StackPanel Margin="16" Spacing="8" Orientation="Horizontal">
-            <Button Command="{Binding Create}" ToolTip.Tip="Create file">
+
+        <StackPanel Grid.Row="1" Margin="16" Spacing="8" Orientation="Horizontal">
+            <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarCreate}" Command="{Binding Create}">
                 <materialIcons:MaterialIcon Kind="Plus" />
             </Button>
-            <Button Command="{Binding Open}" ToolTip.Tip="Open file">
+            <Button Classes="Outline" Command="{Binding Open}" ToolTip.Tip="{x:Static lang:Resources.ToolbarOpen}">
                 <materialIcons:MaterialIcon Kind="FolderOpen" />
             </Button>
-            <Button Command="{Binding Save}" ToolTip.Tip="Save file">
+            <Button Classes="Outline" Command="{Binding Save}" ToolTip.Tip="{x:Static lang:Resources.ToolbarSave}">
                 <materialIcons:MaterialIcon Kind="ContentSave" />
             </Button>
-            <Button Command="{Binding Undo}" ToolTip.Tip="Undo">
+            <Button Classes="Outline" Command="{Binding Undo}" ToolTip.Tip="{x:Static lang:Resources.ToolbarUndo}">
                 <materialIcons:MaterialIcon Kind="Undo" />
             </Button>
-            <Button Command="{Binding Redo}" ToolTip.Tip="Redo">
+            <Button Classes="Outline" Command="{Binding Redo}" ToolTip.Tip="{x:Static lang:Resources.ToolbarRedo}">
                 <materialIcons:MaterialIcon Kind="Redo" />
             </Button>
-            <Button Command="{Binding Copy}" ToolTip.Tip="Copy">
+            <Button Classes="Outline" Command="{Binding Copy}" ToolTip.Tip="{x:Static lang:Resources.ToolbarCopy}">
                 <materialIcons:MaterialIcon Kind="ContentDuplicate" />
             </Button>
-            <Button Command="{Binding Cut}" ToolTip.Tip="Cut">
+            <Button Classes="Outline" Command="{Binding Cut}" ToolTip.Tip="{x:Static lang:Resources.ToolbarCut}">
                 <materialIcons:MaterialIcon Kind="ContentCut" />
             </Button>
-            <Button Command="{Binding Paste}" ToolTip.Tip="Paste">
+            <Button Classes="Outline" Command="{Binding Paste}" ToolTip.Tip="{x:Static lang:Resources.ToolbarPaste}">
                 <materialIcons:MaterialIcon Kind="ContentPaste" />
             </Button>
-            <Button ToolTip.Tip="Run">
+            <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarRun}" Command="{Binding Run}">
                 <materialIcons:MaterialIcon Kind="PlayCircleOutline" />
             </Button>
-            <Button ToolTip.Tip="Call Docs">
+            <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarCallDocs}"
+                    Command="{Binding CallDocs}">
                 <materialIcons:MaterialIcon Kind="HelpCircleOutline" />
             </Button>
-            <Button ToolTip.Tip="About Program">
+            <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarAboutProgram}"
+                    Command="{Binding ShowAboutProgram}">
                 <materialIcons:MaterialIcon Kind="InformationVariantCircleOutline" />
             </Button>
         </StackPanel>
-        <TabControl SelectedIndex="{Binding CurrentEditorIndex}" ItemsSource="{Binding Editors}">
+
+        <TabControl Grid.Row="2" SelectedIndex="{Binding CurrentEditorIndex}" ItemsSource="{Binding Editors}"
+                    AutoScrollToSelectedItem="True" Theme="{StaticResource ScrollableTabControl}">
+            <TabControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </TabControl.ItemsPanel>
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TabItem>
-                        <TabItem.HeaderTemplate>
-                            <DataTemplate x:DataType="vm:EditorViewModel">
-                                <StackPanel Spacing="20" Orientation="Horizontal">
-                                    <TextBlock
-                                        Text="{Binding FileName, Converter={StaticResource DefaultFileNameConverter}}" />
-                                    <Button Command="{Binding Close}">
-                                        <materialIcons:MaterialIcon Kind="WindowClose" />
-                                    </Button>
-                                </StackPanel>
-                            </DataTemplate>
-                        </TabItem.HeaderTemplate>
-                        <views:EditorView DataContext="{Binding .}" />
-                    </TabItem>
+                    <StackPanel Spacing="6" Margin="24 12" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock
+                            Classes="Headline6"
+                            VerticalAlignment="Center">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource FileNameConverter}">
+                                    <Binding Path="FileName" />
+                                    <Binding Path="UntitledFileIndex" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <Button Classes="Icon" ToolTip.Tip="Close file" Command="{Binding Close}">
+                            <materialIcons:MaterialIcon
+                                Width="18" Height="18"
+                                Kind="{Binding MayBeSaved, Converter={StaticResource MayBeSavedToCloseIconConverter}}" />
+                        </Button>
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
         </TabControl>
-    </StackPanel>
+    </Grid>
 </Window>

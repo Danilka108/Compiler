@@ -1,184 +1,192 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using DynamicData;
-using Microsoft.VisualBasic;
+using AvaloniaEdit.Utils;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Compiler.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public interface IProgramCloser
 {
-    // File
+    void CloseProgram();
+}
+
+public class MainWindowViewModel : ViewModelBase, IEditorsSet
+{
     public ReactiveCommand<Unit, Unit> Create { get; }
+
     public ReactiveCommand<Unit, Unit> Open { get; }
+
     public ReactiveCommand<Unit, Unit> Save { get; }
+
     public ReactiveCommand<Unit, Unit> SaveAs { get; }
+
     public ReactiveCommand<Unit, Unit> Exit { get; }
 
-    // Edit
     public ReactiveCommand<Unit, Unit> Undo { get; }
+
     public ReactiveCommand<Unit, Unit> Redo { get; }
-    public ReactiveCommand<Unit, Unit> Cut { get; }
+
     public ReactiveCommand<Unit, Unit> Copy { get; }
+
+    public ReactiveCommand<Unit, Unit> Cut { get; }
+
     public ReactiveCommand<Unit, Unit> Paste { get; }
+
     public ReactiveCommand<Unit, Unit> Delete { get; }
+
     public ReactiveCommand<Unit, Unit> SelectAll { get; }
 
-    // Text
-    // public IReactiveCommand<Unit, Unit> ProblemStatement;
-    // public IReactiveCommand<Unit, Unit> Grammar;
-    // public IReactiveCommand<Unit, Unit> GrammarClassification;
-    // public IReactiveCommand<Unit, Unit> AnalysisMethod;
-    // public IReactiveCommand<Unit, Unit> ErrorDiagnosisAndNeutralization;
-    // public IReactiveCommand<Unit, Unit> TextExample;
-    // public IReactiveCommand<Unit, Unit> ReferencesList;
-    // public IReactiveCommand<Unit, Unit> SourceCode;
-
-    // Docs
     public ReactiveCommand<Unit, Unit> CallDocs { get; }
+
     public ReactiveCommand<Unit, Unit> ShowAboutProgram { get; }
 
-    public Interaction<Unit, string?> OpenFile { get; }
-    public Interaction<Unit, Unit> CloseProgram { get; }
-    public Interaction<Unit, Unit> OpenDocs { get; }
-    public Interaction<Unit, Unit> OpenAboutProgram { get; }
+    public ReactiveCommand<Unit, Unit> ZoomIn { get; }
+    public ReactiveCommand<Unit, Unit> ZoomOut { get; }
+
+    public ReactiveCommand<Unit, Unit> Run { get; }
+
+    public Interaction<Unit, string?> RequestFilePath { get; } = new();
 
     private readonly ObservableCollection<EditorViewModel> _editors = [];
     public ReadOnlyObservableCollection<EditorViewModel> Editors => new(_editors);
 
-    private int _currentEditorIndex = -1;
-
     [Reactive] public int CurrentEditorIndex { get; set; } = -1;
 
-    public EditorViewModel? CurrentEditor => CurrentEditorIndex >= 0 ? Editors[CurrentEditorIndex] : null;
+    [ObservableAsProperty] public EditorViewModel? CurrentEditor { get; }
 
-    // public bool HasEditors => CurrentEditor != null;
+    public Interaction<Unit, Unit> OpenDocs { get; } = new();
+    public Interaction<Unit, Unit> OpenAboutProgram { get; } = new();
 
-    public MainWindowViewModel()
+    private const int MaxFontSize = 52;
+    private const int MinFontSize = 12;
+    private const int DefaultFontSize = 16;
+
+    private int _fontSize = DefaultFontSize;
+
+    public int FontSize
     {
-        OpenFile = new Interaction<Unit, string?>();
-        CloseProgram = new Interaction<Unit, Unit>();
-        OpenDocs = new Interaction<Unit, Unit>();
-        OpenAboutProgram = new Interaction<Unit, Unit>();
-
-        Create = ReactiveCommand.Create(ExecuteCreateFile);
-        Open = ReactiveCommand.CreateFromTask(ExecuteOpenFile);
-        Exit = ReactiveCommand.CreateFromTask(ExecuteExit);
-
-        Save = ReactiveCommand.CreateFromTask(ExecuteEditorSave);
-        SaveAs = ReactiveCommand.CreateFromTask(ExecuteEditorSaveAs);
-        Undo = ReactiveCommand.Create(ExecuteEditorUndo);
-        Redo = ReactiveCommand.Create(ExecuteEditorRedo);
-        Cut = ReactiveCommand.Create(ExecuteEditorCut);
-        Copy = ReactiveCommand.Create(ExecuteEditorCopy);
-        Paste = ReactiveCommand.Create(ExecuteEditorPaste);
-        Delete = ReactiveCommand.Create(ExecuteEditorDelete);
-        SelectAll = ReactiveCommand.Create(ExecuteEditorSelectAll);
-
-        CallDocs = ReactiveCommand.CreateFromTask(ExecuteCallDocs);
-        ShowAboutProgram = ReactiveCommand.CreateFromTask(ExecuteShowAboutProgram);
+        get => _fontSize;
+        set =>
+            this.RaiseAndSetIfChanged(ref _fontSize,
+                value < MinFontSize ? MinFontSize : value > MaxFontSize ? MaxFontSize : value);
     }
 
-    public void CloseEditor(EditorViewModel editor)
-    {
-        // Use lambda or comparator
-        var editorIndex = Editors.IndexOf(editor);
-        if (editorIndex < 0) return;
+    private readonly IFileSaver _fileSaver;
 
-        if (editor.FilePath == CurrentEditor?.FilePath)
+    public MainWindowViewModel(IProgramCloser programCloser, IFileSaver fileSaver)
+    {
+        _fileSaver = fileSaver;
+
+        this
+            .WhenAnyValue(vm => vm.CurrentEditorIndex)
+            .Select(i => i >= 0 ? Editors[i] : null)
+            .ToPropertyEx(this, vm => vm.CurrentEditor);
+
+        var isFileSelected = this.WhenAnyValue(vm => vm.CurrentEditorIndex, i => i >= 0);
+
+        Create = ReactiveCommand.Create(() => AddEditor(null));
+        Open = ReactiveCommand.CreateFromTask(OnOpenEditor);
+        Save = ReactiveCommand.CreateFromTask(async () =>
         {
-            // CurrentEditorIndex = editorIndex - 1 < 0 ? 0 : editorIndex - 1;
-            var nextEditor = Editors[editorIndex - 1 < 0 ? 0 : editorIndex - 1];
-            _editors.RemoveAt(editorIndex);
-            CurrentEditorIndex = _editors.IndexOf(nextEditor);
-        }
-        else if (CurrentEditor != null)
+            if (CurrentEditor != null) await CurrentEditor.Save();
+        }, isFileSelected);
+        SaveAs = ReactiveCommand.CreateFromTask(async () =>
         {
-            var currentEditor = CurrentEditor;
-            _editors.RemoveAt(editorIndex);
-            CurrentEditorIndex = _editors.IndexOf(currentEditor);
+            if (CurrentEditor != null) await CurrentEditor.SaveAs();
+        }, isFileSelected);
+        Exit = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await CloseAllEditors();
+            programCloser.CloseProgram();
+        });
+
+        Undo = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.Undo), isFileSelected);
+        Redo = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.Redo), isFileSelected);
+        Copy = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.Copy), isFileSelected);
+        Cut = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.Cut), isFileSelected);
+        Paste = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.Paste), isFileSelected);
+        Delete = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.Delete), isFileSelected);
+        SelectAll = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.SelectAll), isFileSelected);
+
+        CallDocs = ReactiveCommand.CreateFromTask(async () => { await OpenDocs.Handle(Unit.Default); });
+        ShowAboutProgram = ReactiveCommand.CreateFromTask(async () => { await OpenAboutProgram.Handle(Unit.Default); });
+
+        ZoomIn = ReactiveCommand.Create(() => { FontSize++; });
+        ZoomOut = ReactiveCommand.Create(() => { FontSize--; });
+
+        Run = ReactiveCommand.Create(() => CurrentEditor?.Run(), isFileSelected);
+    }
+
+    private async Task OnOpenEditor()
+    {
+        var filePath = await RequestFilePath.Handle(Unit.Default);
+        if (filePath != null) AddEditor(filePath);
+    }
+
+    private bool _canEditorBeModified = true;
+
+    private int _untitledEditorsAmount;
+
+    public void AddEditor(string? filePath)
+    {
+        if (!_canEditorBeModified) return;
+
+        _editors.Add(new EditorViewModel(this, _fileSaver, filePath,
+            filePath == null ? ++_untitledEditorsAmount : null));
+        CurrentEditorIndex = Editors.Count - 1;
+    }
+
+    public void AddEditors(IEnumerable<string> filePaths)
+    {
+        if (!_canEditorBeModified) return;
+
+        var editors = filePaths
+            .Select(filePath => new EditorViewModel(this, _fileSaver, filePath, null));
+
+        _editors.AddRange(editors);
+        CurrentEditorIndex = Editors.Count - 1;
+    }
+
+    public void RemoveEditor(EditorViewModel editor)
+    {
+        var nextEditor = NextEditor(editor);
+
+        _editors.Remove(editor);
+        CurrentEditorIndex = nextEditor != null ? _editors.IndexOf(nextEditor) : -1;
+    }
+
+    private EditorViewModel? NextEditor(EditorViewModel editorToRemove)
+    {
+        if (CurrentEditor == null)
+            return null;
+
+        var editorIndex = Editors.IndexOf(editorToRemove);
+        if (editorIndex <= 0)
+            return null;
+
+        return editorToRemove.FilePath == CurrentEditor.FilePath ? Editors[editorIndex - 1] : CurrentEditor;
+    }
+
+    public async Task CloseAllEditors()
+    {
+        _canEditorBeModified = false;
+
+        for (var i = 0; i < Editors.Count; i++)
+        {
+            if (CurrentEditorIndex != i)
+            {
+                CurrentEditorIndex = i;
+                await CurrentEditor!.Activated.Take(1);
+            }
+
+            await CurrentEditor!.SaveWithConfirmation();
         }
-    }
 
-    public async Task CloseAll()
-    {
-        foreach (var editor in Editors) await editor.Close.Execute();
-    }
-
-    private void ExecuteCreateFile()
-    {
-        _editors.Add(new EditorViewModel(this));
-    }
-
-    private async Task ExecuteOpenFile()
-    {
-        var fileName = await OpenFile.Handle(Unit.Default);
-        if (fileName == null) return;
-
-        _editors.Add(new EditorViewModel(this, fileName));
-    }
-
-    private async Task ExecuteEditorSave()
-    {
-        if (CurrentEditor is { } editor) await editor.Save();
-    }
-
-    private async Task ExecuteEditorSaveAs()
-    {
-        if (CurrentEditor is { } editor) await editor.SaveAs();
-    }
-
-    private async Task ExecuteExit()
-    {
-        await CloseProgram.Handle(Unit.Default);
-    }
-
-    private void ExecuteEditorUndo()
-    {
-        CurrentEditor?.Undo();
-    }
-
-    private void ExecuteEditorRedo()
-    {
-        CurrentEditor?.Redo();
-    }
-
-    private void ExecuteEditorCut()
-    {
-        CurrentEditor?.Cut();
-    }
-
-    private void ExecuteEditorCopy()
-    {
-        CurrentEditor?.Copy();
-    }
-
-    private void ExecuteEditorPaste()
-    {
-        CurrentEditor?.Paste();
-    }
-
-    private void ExecuteEditorDelete()
-    {
-        CurrentEditor?.Delete();
-    }
-
-    private void ExecuteEditorSelectAll()
-    {
-        CurrentEditor?.SelectAll();
-    }
-
-    private async Task ExecuteCallDocs()
-    {
-        await OpenDocs.Handle(Unit.Default);
-    }
-
-    private async Task ExecuteShowAboutProgram()
-    {
-        await OpenAboutProgram.Handle(Unit.Default);
+        _canEditorBeModified = true;
     }
 }

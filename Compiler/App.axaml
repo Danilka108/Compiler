@@ -1,8 +1,11 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Compiler.App"
-             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:local="using:Compiler"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:converters="clr-namespace:Compiler.Converters"
              RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -10,10 +13,33 @@
         <local:ViewLocator />
     </Application.DataTemplates>
 
+    <Application.Resources>
+        <FontFamily x:Key="ContentControlThemeFontFamily">fonts:Inter#Inter, $Default</FontFamily>
+        <system:Double x:Key="ControlContentThemeFontSize">14</system:Double>
+
+        <converters:FileNameConverter x:Key="FileNameConverter" />
+        <converters:MayBeSavedToIconKindConverter x:Key="MayBeSavedToCloseIconConverter" />
+        <converters:TokenToTokenTypeConverter x:Key="TokenToTokenTypeConverter" />
+        <converters:TokenErrorToDescriptionConverter x:Key="TokenErrorToDescriptionConverter" />
+
+        <!-- <ResourceDictionary> -->
+        <!--     <ResourceDictionary.MergedDictionaries></ResourceDictionary.MergedDictionaries> -->
+        <!--      -->
+        <!-- </ResourceDictionary> -->
+    </Application.Resources>
+
     <Application.Styles>
-        <materialIcons:MaterialIconStyles />
-        <FluentTheme />
+        <themes:MaterialTheme BaseTheme="Light" PrimaryColor="Purple" SecondaryColor="Lime" />
+        <Style>
+            <Style.Resources>
+                <!-- <SolidColorBrush x:Key="TextAreaSelectionBrush" Color="{DynamicResource MaterialPrimaryMidBrush}" /> -->
+                <SolidColorBrush x:Key="TextAreaSelectionBrush" Color="DarkBlue" />
+            </Style.Resources>
+        </Style>
+
+        <avalonia:MaterialIconStyles />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+        <!-- <FluentTheme /> -->
+        <!-- <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/> -->
     </Application.Styles>
 </Application>

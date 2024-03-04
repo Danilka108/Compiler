@@ -1,0 +1,267 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="AboutProgramItemHeader" xml:space="preserve">
+        <value>О программе</value>
+    </data>
+    <data name="AnalysisMethodMenuItemHeader" xml:space="preserve">
+        <value>Метод анализа</value>
+    </data>
+    <data name="BibliographyMenuItemHeader" xml:space="preserve">
+        <value>Источники</value>
+    </data>
+    <data name="CallDocsItemHeader" xml:space="preserve">
+        <value>Вызвать справку</value>
+    </data>
+    <data name="CopyMenuItemHeader" xml:space="preserve">
+        <value>Копировать</value>
+    </data>
+    <data name="CreateMenuItemHeader" xml:space="preserve">
+        <value>Создать</value>
+    </data>
+    <data name="CutMenuItemHeader" xml:space="preserve">
+        <value>Вырезать</value>
+    </data>
+    <data name="DecreaseTextSizeMenuItemHeader" xml:space="preserve">
+        <value>Уменьшить</value>
+    </data>
+    <data name="DeleteMenuItemHeader" xml:space="preserve">
+        <value>Удалить</value>
+    </data>
+    <data name="DiagnosticNeutralizationMenuItemHeader" xml:space="preserve">
+        <value>Диагностика и нейтрализация ошибок</value>
+    </data>
+    <data name="DocsItemHeader" xml:space="preserve">
+        <value>Справка</value>
+    </data>
+    <data name="DocsWindowTitle" xml:space="preserve">
+        <value>Справка</value>
+    </data>
+    <data name="EditMenuItemHeader" xml:space="preserve">
+        <value>Правка</value>
+    </data>
+    <data name="ErrorsDescriptionColumn" xml:space="preserve">
+        <value>Описание</value>
+    </data>
+    <data name="ErrorsPositionColumn" xml:space="preserve">
+        <value>Позиция</value>
+    </data>
+    <data name="ErrorsTab" xml:space="preserve">
+        <value>Ошибки</value>
+    </data>
+    <data name="ExitMenuItemHeader" xml:space="preserve">
+        <value>Выйти</value>
+    </data>
+    <data name="FileMenuItemHeader" xml:space="preserve">
+        <value>Файл</value>
+    </data>
+    <data name="GrammarClassificationMenuItemHeader" xml:space="preserve">
+        <value>Классификация грамматики</value>
+    </data>
+    <data name="GrammarMenuItemHeader" xml:space="preserve">
+        <value>грамматика</value>
+    </data>
+    <data name="IncreaseTextSizeMenuItemHeader" xml:space="preserve">
+        <value>Увеличить</value>
+    </data>
+    <data name="OpenMenuItemHeader" xml:space="preserve">
+        <value>Открыть</value>
+    </data>
+    <data name="PasteMenuItemHeader" xml:space="preserve">
+        <value>Вставить</value>
+    </data>
+    <data name="ProblemFormulationMenuItemHeader" xml:space="preserve">
+        <value>Постановка задачи</value>
+    </data>
+    <data name="RedoMenuItemHeader" xml:space="preserve">
+        <value>Отменить</value>
+    </data>
+    <data name="RunMenuItemHeader" xml:space="preserve">
+        <value>Запустить</value>
+    </data>
+    <data name="SaveAsMenuItemHeader" xml:space="preserve">
+        <value>Сохранить как</value>
+    </data>
+    <data name="SaveDialogCancel" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="SaveDialogContentHeader" xml:space="preserve">
+        <value>Хотите сохранить изменения, внесенные в {0}?</value>
+    </data>
+    <data name="SaveDialogDontSave" xml:space="preserve">
+        <value>Не сохранять</value>
+    </data>
+    <data name="SaveDialogSave" xml:space="preserve">
+        <value>Сохранить</value>
+    </data>
+    <data name="SaveDialogSupportingText" xml:space="preserve">
+        <value>Ваши изменения будут потеряны, если вы их не сохраните.</value>
+    </data>
+    <data name="SaveFilePickerTitle" xml:space="preserve">
+        <value>Сохранить файл</value>
+    </data>
+    <data name="SaveMenuItemHeader" xml:space="preserve">
+        <value>Сохранить</value>
+    </data>
+    <data name="SelectAllMenuItemHeader" xml:space="preserve">
+        <value>Выбрать все</value>
+    </data>
+    <data name="SourceCodeMenuItemHeader" xml:space="preserve">
+        <value>Исходный код</value>
+    </data>
+    <data name="TextExampleMenuItemHeader" xml:space="preserve">
+        <value>Текстовый пример</value>
+    </data>
+    <data name="TextMenuItemHeader" xml:space="preserve">
+        <value>Текст</value>
+    </data>
+    <data name="TextSizeMenuItemHeader" xml:space="preserve">
+        <value>Размер текста</value>
+    </data>
+    <data name="TokenErrorIdentifierCanOnlyStartWithALetter" xml:space="preserve">
+        <value>Идентификатор может начинаться только с буквы</value>
+    </data>
+    <data name="TokenErrorUnexpectedSymbol" xml:space="preserve">
+        <value>Неопределенный символ(ы)</value>
+    </data>
+    <data name="TokenErrorUnterminatedString" xml:space="preserve">
+        <value>Незакрытая строка</value>
+    </data>
+    <data name="TokensCodeColumn" xml:space="preserve">
+        <value>Код</value>
+    </data>
+    <data name="TokensTab" xml:space="preserve">
+        <value>Токены</value>
+    </data>
+    <data name="TokensTokenColumn" xml:space="preserve">
+        <value>Токен</value>
+    </data>
+    <data name="TokensTypeColumn" xml:space="preserve">
+        <value>Тип</value>
+    </data>
+    <data name="TokenTypeAmpersand" xml:space="preserve">
+        <value>Амперсанд</value>
+    </data>
+    <data name="TokenTypeAssignmentOperator" xml:space="preserve">
+        <value>Оператор присваивания</value>
+    </data>
+    <data name="TokenTypeColon" xml:space="preserve">
+        <value>Двоеточие</value>
+    </data>
+    <data name="TokenTypeConstKeyword" xml:space="preserve">
+        <value>Ключевое слово const</value>
+    </data>
+    <data name="TokenTypeIdentifier" xml:space="preserve">
+        <value>Идентификатор</value>
+    </data>
+    <data name="TokenTypeOperatorEnd" xml:space="preserve">
+        <value>Конец оператора</value>
+    </data>
+    <data name="TokenTypeSeparator" xml:space="preserve">
+        <value>Разделитель</value>
+    </data>
+    <data name="TokenTypeStringLiteral" xml:space="preserve">
+        <value>Строковый литерал</value>
+    </data>
+    <data name="TokenTypeStrKeyword" xml:space="preserve">
+        <value>Ключевое слово str</value>
+    </data>
+    <data name="ToolbarAboutProgram" xml:space="preserve">
+        <value>О программе</value>
+    </data>
+    <data name="ToolbarCallDocs" xml:space="preserve">
+        <value>Вызвать документацию</value>
+    </data>
+    <data name="ToolbarCopy" xml:space="preserve">
+        <value>Скопировать</value>
+    </data>
+    <data name="ToolbarCreate" xml:space="preserve">
+        <value>Создать файл</value>
+    </data>
+    <data name="ToolbarCut" xml:space="preserve">
+        <value>Вырезать</value>
+    </data>
+    <data name="ToolbarOpen" xml:space="preserve">
+        <value>Открыть</value>
+    </data>
+    <data name="ToolbarPaste" xml:space="preserve">
+        <value>Вставить</value>
+    </data>
+    <data name="ToolbarRedo" xml:space="preserve">
+        <value>Повторить</value>
+    </data>
+    <data name="ToolbarRun" xml:space="preserve">
+        <value>Запустить</value>
+    </data>
+    <data name="ToolbarSave" xml:space="preserve">
+        <value>Сохранить файл</value>
+    </data>
+    <data name="ToolbarUndo" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="UndoMenuItemHeader" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="UntitledFileName" xml:space="preserve">
+        <value>Без названия {0}</value>
+    </data>
+    <data name="WindowWarningTitle" xml:space="preserve">
+        <value>Предупреждение</value>
+    </data>
+    <data name="SaveMenuItemHeaderDescription" xml:space="preserve">
+        <value>Сохранить текущий файл</value>
+    </data>
+    <data name="SelectAllMenuItemHeaderDescription" xml:space="preserve">
+        <value>Выделить весь текст</value>
+    </data>
+    <data name="UndoMenuItemHeaderDescription" xml:space="preserve">
+        <value>Отменить последнее действие</value>
+    </data>
+    <data name="SaveAsMenuItemHeaderDescription" xml:space="preserve">
+        <value>Сохранить текущий файл под новым именем</value>
+    </data>
+    <data name="RedoMenuItemHeaderDescription" xml:space="preserve">
+        <value>Повторить последнее отмененное действие</value>
+    </data>
+    <data name="DeleteMenuItemHeaderDescription" xml:space="preserve">
+        <value>Удалить выделенный текст</value>
+    </data>
+    <data name="CutMenuItemHeaderDescription" xml:space="preserve">
+        <value>Удалить выделенный текст и скопировать его в буфер обмена</value>
+    </data>
+    <data name="CopyMenuItemHeaderDescription" xml:space="preserve">
+        <value>Скопировать выделенный текст в буфер обмена</value>
+    </data>
+    <data name="CreateMenuItemHeaderDescription" xml:space="preserve">
+        <value>Создать новый файл</value>
+    </data>
+    <data name="CallDocsItemHeaderDescription" xml:space="preserve">
+        <value>Показать окно документации</value>
+    </data>
+    <data name="AboutProgramItemHeaderDescription" xml:space="preserve">
+        <value>Показать информацию о программе</value>
+    </data>
+    <data name="ExitMenuItemHeaderDescription" xml:space="preserve">
+        <value>Закрыть текстовый редактор</value>
+    </data>
+    <data name="PasteMenuItemHeaderDescription" xml:space="preserve">
+        <value>Вставить текст из буфера обмена где расположен курсор</value>
+    </data>
+    <data name="OpenMenuItemHeaderDescription" xml:space="preserve">
+        <value>Открый новый файл</value>
+    </data>
+</root>

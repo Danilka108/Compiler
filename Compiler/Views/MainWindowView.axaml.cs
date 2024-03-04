@@ -1,64 +1,86 @@
 using System;
+using System.Globalization;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
 using Compiler.ViewModels;
 using ReactiveUI;
 
 namespace Compiler.Views;
 
-public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>
+public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>, IProgramCloser
 {
-    private readonly FileManager _fileManager;
-
     public MainWindowView()
     {
-        Closing += OnClosing;
-
         InitializeComponent();
 
-        _fileManager = new FileManager(StorageProvider);
+        Closing += HandleClosing;
 
         this.WhenActivated(d =>
         {
-            this.BindInteraction(ViewModel, vm => vm.OpenFile, OpenFile).DisposeWith(d);
-            this.BindInteraction(ViewModel, vm => vm.CloseProgram, CloseProgram).DisposeWith(d);
-            this.BindInteraction(ViewModel, vm => vm.OpenDocs, OpenDocs).DisposeWith(d);
-            this.BindInteraction(ViewModel, vm => vm.OpenAboutProgram, OpenAboutProgram).DisposeWith(d);
+            this
+                .BindInteraction(ViewModel, vm => vm.RequestFilePath, RequestFilePath)
+                .DisposeWith(d);
+
+            this
+                .BindInteraction(ViewModel, vm => vm.OpenDocs, async context =>
+                {
+                    var docsWindow = new DocsWindowView();
+                    docsWindow.DataContext = docsWindow;
+                    await docsWindow.ShowDialog(this);
+                    context.SetOutput(Unit.Default);
+                })
+                .DisposeWith(d);
+
+            this
+                .BindInteraction(ViewModel, vm => vm.OpenAboutProgram, async context =>
+                {
+                    await ShowDialog(new DocsWindowView());
+                    context.SetOutput(Unit.Default);
+                })
+                .DisposeWith(d);
         });
     }
 
-    private void OnClosing(object? sender, WindowClosingEventArgs windowClosingEventArgs)
+    private async void HandleClosing(object? sender, WindowClosingEventArgs e)
     {
-        Task.Run(async () =>
+        e.Cancel = true;
+        if (ViewModel != null) await ViewModel.CloseAllEditors();
+
+        Closing -= HandleClosing;
+        Close();
+    }
+
+    private async Task RequestFilePath(IInteractionContext<Unit, string?> context)
+    {
+        var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions { AllowMultiple = false });
+
+        if (files.Count == 0)
         {
-            if (ViewModel != null) await ViewModel.CloseAll();
-        }).Wait();
+            context.SetOutput(null);
+            return;
+        }
+
+        context.SetOutput(files[0].Path.AbsolutePath);
     }
 
-    private async Task OpenFile(IInteractionContext<Unit, string?> context)
-    {
-        var filePath = await _fileManager.TryOpen();
-        context.SetOutput(filePath);
-    }
-
-    private async Task CloseProgram(IInteractionContext<Unit, Unit> context)
+    public void CloseProgram()
     {
         Close();
-        context.SetOutput(Unit.Default);
     }
 
-    private async Task OpenDocs(IInteractionContext<Unit, Unit> context)
+    private void SetEnglish(object? sender, RoutedEventArgs e)
     {
-        // TODO
-        context.SetOutput(Unit.Default);
+        // Lang.Resources.Culture = new CultureInfo("");
     }
 
-    private async Task OpenAboutProgram(IInteractionContext<Unit, Unit> context)
+    private void SetRussian(object? sender, RoutedEventArgs e)
     {
-        // TODO
-        context.SetOutput(Unit.Default);
+        // Lang.Resources.Culture = new CultureInfo("ru");
+        // InvalidateVisual();
     }
 }
