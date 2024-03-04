@@ -233,6 +233,9 @@
     <data name="ErrorsPositionColumn" xml:space="preserve">
         <value>Position</value>
     </data>
+    <data name="TokensPositionColumn" xml:space="preserve">
+        <value>Position</value>
+    </data>
     <data name="ErrorsDescriptionColumn" xml:space="preserve">
         <value>Description</value>
     </data>

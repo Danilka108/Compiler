@@ -225,7 +225,8 @@ public class EditorViewModel : ViewModelBase
         var scanner = new Scanner<TokenType, TokenError>(editor.Document.Text, TokensScanners.TokenScanners);
         var tokens = scanner.Scan().ToArray();
 
-        var tokenViewModels = tokens.Select(token => new EditorTokenViewModel(token, editor.Document.Text));
+        var tokenViewModels = tokens.Select(token =>
+            new EditorTokenViewModel(editor.OffsetToCaretPos(token.Span.Start), token, editor.Document.Text));
 
         var errorViewModels = tokens
             .OfType<Token<TokenType, TokenError>.InvalidToken>()

@@ -51,6 +51,9 @@
                           ItemsSource="{Binding Tokens}">
                     <DataGrid.Columns>
                         <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
+                                            Header="{x:Static lang:Resources.TokensPositionColumn}"
+                                            Binding="{Binding CaretPos.AsString}" />
+                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
                                             Header="{x:Static lang:Resources.TokensCodeColumn}"
                                             Binding="{Binding Code}" />
                         <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"

@@ -465,6 +465,12 @@ namespace Compiler.Lang {
             }
         }
         
+        public static string TokensPositionColumn {
+            get {
+                return ResourceManager.GetString("TokensPositionColumn", resourceCulture);
+            }
+        }
+        
         public static string ErrorsDescriptionColumn {
             get {
                 return ResourceManager.GetString("ErrorsDescriptionColumn", resourceCulture);

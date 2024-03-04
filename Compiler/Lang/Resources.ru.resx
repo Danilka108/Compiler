@@ -264,4 +264,7 @@
     <data name="OpenMenuItemHeaderDescription" xml:space="preserve">
         <value>Открый новый файл</value>
     </data>
+    <data name="TokensPositionColumn" xml:space="preserve">
+        <value>Позиция</value>
+    </data>
 </root>
