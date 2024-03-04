@@ -94,7 +94,8 @@ public static class TokensScanners
 
     private static ScanResult ScanSeparatorToken(Caret caret)
     {
-        return caret.TryEatWhile(char.IsSeparator)
+        return caret.TryEatWhile((sym, nextSym) => char.IsSeparator(sym) || $"{sym}" == Environment.NewLine ||
+                                                   (nextSym is { } n && $"{sym}{n}" == Environment.NewLine))
             ? ScanResult.Token(TokenType.Separator)
             : ScanResult.Nothing();
     }

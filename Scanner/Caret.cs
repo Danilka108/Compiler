@@ -65,11 +65,11 @@ public class Caret
         return _span.End - start > 0;
     }
 
-    public bool TryEatWhile(Func<(char, char?), bool> predicate)
+    public bool TryEatWhile(Func<char, char?, bool> predicate)
     {
         var start = _span.End;
         while (GetCurrentSymbol() is { } currentSymbol &&
-               predicate((currentSymbol, GetNextSymbol()))) _span.MoveEndPos();
+               predicate(currentSymbol, GetNextSymbol())) _span.MoveEndPos();
         return _span.End - start > 0;
     }
 
