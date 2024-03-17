@@ -65,6 +65,12 @@ public class Editor : ITextEditor
             DocumentChanged?.Invoke(this, new EditorDocumentChangedEventArgs(textEditor.Document.CreateSnapshot()));
     }
 
+
+    public void UpdateText(string text)
+    {
+        TextEditor.Document.Text = text;
+    }
+
     public void Undo()
     {
         TextEditor.Undo();

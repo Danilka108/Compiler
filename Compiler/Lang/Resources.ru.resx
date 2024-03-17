@@ -93,6 +93,9 @@
     <data name="RunMenuItemHeader" xml:space="preserve">
         <value>Запустить</value>
     </data>
+    <data name="FixMenuItemHeader" xml:space="preserve">
+        <value>Исправить</value>
+    </data>
     <data name="SaveAsMenuItemHeader" xml:space="preserve">
         <value>Сохранить как</value>
     </data>
@@ -207,6 +210,9 @@
     <data name="ToolbarRun" xml:space="preserve">
         <value>Запустить</value>
     </data>
+    <data name="ToolbarFix" xml:space="preserve">
+        <value>Исправить</value>
+    </data>
     <data name="ToolbarSave" xml:space="preserve">
         <value>Сохранить файл</value>
     </data>
@@ -266,5 +272,32 @@
     </data>
     <data name="TokensPositionColumn" xml:space="preserve">
         <value>Позиция</value>
+    </data>
+    <data name="ConstKeywordExpected" xml:space="preserve">
+        <value>Ожидается ключевое слово const</value>
+    </data>
+    <data name="IdentifierExpected" xml:space="preserve">
+        <value>ожидается идентификатор</value>
+    </data>
+    <data name="TypeDividerExpected" xml:space="preserve">
+        <value>ожидается разделитель типа</value>
+    </data>
+    <data name="LinkExpected" xml:space="preserve">
+        <value>ожидается ссылка</value>
+    </data>
+    <data name="StrTypeExpected" xml:space="preserve">
+        <value>ожидается тип str</value>
+    </data>
+    <data name="AssignmentOperatorExpected" xml:space="preserve">
+        <value>ожидается оператор присваивания</value>
+    </data>
+    <data name="StringLiteralExpected" xml:space="preserve">
+        <value>ожидается строковый литерал</value>
+    </data>
+    <data name="OperatorEndExpected" xml:space="preserve">
+        <value>Ожидается конец оператора</value>
+    </data>
+    <data name="NothingExpected" xml:space="preserve">
+        <value>ничего не ожидается</value>
     </data>
 </root>

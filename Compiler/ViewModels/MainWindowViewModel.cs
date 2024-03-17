@@ -50,6 +50,8 @@ public class MainWindowViewModel : ViewModelBase, IEditorsSet
 
     public ReactiveCommand<Unit, Unit> Run { get; }
 
+    public ReactiveCommand<Unit, Unit> Fix { get; }
+
     public Interaction<Unit, string?> RequestFilePath { get; } = new();
 
     private readonly ObservableCollection<EditorViewModel> _editors = [];
@@ -120,6 +122,7 @@ public class MainWindowViewModel : ViewModelBase, IEditorsSet
         ZoomOut = ReactiveCommand.Create(() => { FontSize--; });
 
         Run = ReactiveCommand.Create(() => CurrentEditor?.Run(), isFileSelected);
+        Fix = ReactiveCommand.Create(() => CurrentEditor?.Fix(), isFileSelected);
     }
 
     private async Task OnOpenEditor()

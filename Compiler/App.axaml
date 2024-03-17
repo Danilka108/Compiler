@@ -20,7 +20,7 @@
         <converters:FileNameConverter x:Key="FileNameConverter" />
         <converters:MayBeSavedToIconKindConverter x:Key="MayBeSavedToCloseIconConverter" />
         <converters:TokenToTokenTypeConverter x:Key="TokenToTokenTypeConverter" />
-        <converters:TokenErrorToDescriptionConverter x:Key="TokenErrorToDescriptionConverter" />
+        <converters:ErrorToDescriptionConverter x:Key="ErrorToDescriptionConverter" />
 
         <!-- <ResourceDictionary> -->
         <!--     <ResourceDictionary.MergedDictionaries></ResourceDictionary.MergedDictionaries> -->

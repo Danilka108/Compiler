@@ -243,6 +243,12 @@ namespace Compiler.Lang {
             }
         }
         
+        public static string FixMenuItemHeader {
+            get {
+                return ResourceManager.GetString("FixMenuItemHeader", resourceCulture);
+            }
+        }
+        
         public static string SaveAsMenuItemHeader {
             get {
                 return ResourceManager.GetString("SaveAsMenuItemHeader", resourceCulture);
@@ -366,6 +372,12 @@ namespace Compiler.Lang {
         public static string ToolbarRun {
             get {
                 return ResourceManager.GetString("ToolbarRun", resourceCulture);
+            }
+        }
+        
+        public static string ToolbarFix {
+            get {
+                return ResourceManager.GetString("ToolbarFix", resourceCulture);
             }
         }
         
@@ -546,6 +558,66 @@ namespace Compiler.Lang {
         public static string TokenErrorIdentifierCanOnlyStartWithALetter {
             get {
                 return ResourceManager.GetString("TokenErrorIdentifierCanOnlyStartWithALetter", resourceCulture);
+            }
+        }
+        
+        public static string ConstKeywordExpected {
+            get {
+                return ResourceManager.GetString("ConstKeywordExpected", resourceCulture);
+            }
+        }
+        
+        public static string IdentifierExpected {
+            get {
+                return ResourceManager.GetString("IdentifierExpected", resourceCulture);
+            }
+        }
+        
+        public static string TypeDividerExpected {
+            get {
+                return ResourceManager.GetString("TypeDividerExpected", resourceCulture);
+            }
+        }
+        
+        public static string LinkExpected {
+            get {
+                return ResourceManager.GetString("LinkExpected", resourceCulture);
+            }
+        }
+        
+        public static string StrTypeExpected {
+            get {
+                return ResourceManager.GetString("StrTypeExpected", resourceCulture);
+            }
+        }
+        
+        public static string AssignmentOperatorExpected {
+            get {
+                return ResourceManager.GetString("AssignmentOperatorExpected", resourceCulture);
+            }
+        }
+        
+        public static string StringLiteralExpected {
+            get {
+                return ResourceManager.GetString("StringLiteralExpected", resourceCulture);
+            }
+        }
+        
+        public static string OperatorEndExpected {
+            get {
+                return ResourceManager.GetString("OperatorEndExpected", resourceCulture);
+            }
+        }
+        
+        public static string NothingExpected {
+            get {
+                return ResourceManager.GetString("NothingExpected", resourceCulture);
+            }
+        }
+        
+        public static string ParseErrorsTab {
+            get {
+                return ResourceManager.GetString("ParseErrorsTab", resourceCulture);
             }
         }
     }

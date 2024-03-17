@@ -39,12 +39,14 @@ public struct CaretPos
     public int Row { get; init; }
     public int Column { get; init; }
 
-    public string AsString => $"{Row}:{Column}";
+    public string AsString => $"row {Row} col {Column}";
 }
 
 public interface ITextEditor
 {
     IDocument Document { get; }
+
+    void UpdateText(string text);
 
     event EventHandler<IDocumentChangedEventArgs> DocumentChanged;
 
@@ -138,6 +140,8 @@ public class EditorViewModel : ViewModelBase
 
     public ObservableCollection<EditorErrorViewModel> Errors { get; }
 
+    public ObservableCollection<EditorParseErrorViewModel> ParseErrors { get; }
+
     [Reactive] public bool HasErrors { get; private set; }
 
     public ObservableCollection<EditorTokenViewModel> Tokens { get; }
@@ -179,6 +183,23 @@ public class EditorViewModel : ViewModelBase
         }
     }
 
+    private int _selectedParseErrorIndex = -1;
+
+    public int SelectedParseErrorIndex
+    {
+        get => _selectedParseErrorIndex;
+        set
+        {
+            if (value >= 0 && value < ParseErrors.Count)
+            {
+                var span = ParseErrors[value].Span;
+                TextEditor?.Select(span.Start, span.End);
+            }
+
+            this.RaiseAndSetIfChanged(ref _selectedParseErrorIndex, value);
+        }
+    }
+
     public EditorViewModel(IEditorsSet editorsSet, IFileSaver fileSaver,
         string? filePath, int? untitledIndex)
     {
@@ -209,6 +230,7 @@ public class EditorViewModel : ViewModelBase
 
         Errors = new ObservableCollection<EditorErrorViewModel>();
         Tokens = new ObservableCollection<EditorTokenViewModel>();
+        ParseErrors = new ObservableCollection<EditorParseErrorViewModel>();
 
         this
             .WhenAnyValue(vm => vm.CurrentDocument, vm => vm.LatestSavedDocument, vm => vm.FilePath,
@@ -218,12 +240,25 @@ public class EditorViewModel : ViewModelBase
             ).ToPropertyEx(this, vm => vm.MayBeSaved);
     }
 
+    public void Fix()
+    {
+        if (TextEditor == null) return;
+
+        var fixer = new Fixer(TextEditor.Document.Text);
+        var newText = fixer.Fix();
+
+        TextEditor.UpdateText(newText);
+    }
+
     public void Run()
     {
         if (TextEditor is not { } editor) return;
 
         var scanner = new Scanner<TokenType, TokenError>(editor.Document.Text, TokensScanners.TokenScanners);
-        var tokens = scanner.Scan().ToArray();
+        var tokens = scanner.ToArray();
+
+        var parser = new Parser(tokens);
+        var parseErrors = parser.ToArray();
 
         var tokenViewModels = tokens.Select(token =>
             new EditorTokenViewModel(editor.OffsetToCaretPos(token.Span.Start), token, editor.Document.Text));
@@ -237,6 +272,11 @@ public class EditorViewModel : ViewModelBase
                 Span = invalidToken.Span
             }).ToArray();
 
+        var parseErrorViewModels = parseErrors.Select(error =>
+            new EditorParseErrorViewModel
+                { ErrorType = error.Type, CaretPos = editor.OffsetToCaretPos(error.Span.Start), Span = error.Span }
+        );
+
         HasErrors = errorViewModels.Length != 0;
 
         Errors.Clear();
@@ -244,6 +284,9 @@ public class EditorViewModel : ViewModelBase
 
         Tokens.Clear();
         Tokens.Add(tokenViewModels);
+
+        ParseErrors.Clear();
+        ParseErrors.Add(parseErrorViewModels);
     }
 
     public override bool Equals(object? obj)

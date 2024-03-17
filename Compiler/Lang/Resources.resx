@@ -122,6 +122,9 @@
     <data name="RunMenuItemHeader" xml:space="preserve">
         <value>Run</value>
     </data>
+    <data name="FixMenuItemHeader" xml:space="preserve">
+        <value>Fix</value>
+    </data>
     <data name="SaveAsMenuItemHeader" xml:space="preserve">
         <value>Save as</value>
     </data>
@@ -184,6 +187,9 @@
     </data>
     <data name="ToolbarRun" xml:space="preserve">
         <value>Run</value>
+    </data>
+    <data name="ToolbarFix" xml:space="preserve">
+        <value>Fix</value>
     </data>
     <data name="ToolbarCallDocs" xml:space="preserve">
         <value>Call docs</value>
@@ -274,5 +280,35 @@
     </data>
     <data name="TokenErrorIdentifierCanOnlyStartWithALetter" xml:space="preserve">
         <value>Identifier can only start with a number</value>
+    </data>
+    <data name="ConstKeywordExpected" xml:space="preserve">
+        <value>Expected const keyword</value>
+    </data>
+    <data name="IdentifierExpected" xml:space="preserve">
+        <value>expected identifier</value>
+    </data>
+    <data name="TypeDividerExpected" xml:space="preserve">
+        <value>expected type divider</value>
+    </data>
+    <data name="LinkExpected" xml:space="preserve">
+        <value>expected link</value>
+    </data>
+    <data name="StrTypeExpected" xml:space="preserve">
+        <value>expected str type</value>
+    </data>
+    <data name="AssignmentOperatorExpected" xml:space="preserve">
+        <value>expected assignment operator</value>
+    </data>
+    <data name="StringLiteralExpected" xml:space="preserve">
+        <value>expected string literal</value>
+    </data>
+    <data name="OperatorEndExpected" xml:space="preserve">
+        <value>expected operator end</value>
+    </data>
+    <data name="NothingExpected" xml:space="preserve">
+        <value>nothing expected</value>
+    </data>
+    <data name="ParseErrorsTab" xml:space="preserve">
+        <value>Parse errors</value>
     </data>
 </root>

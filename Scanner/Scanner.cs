@@ -1,32 +1,47 @@
+using System.Collections;
+
 namespace Scanner;
 
 public delegate ScanResult<TTokenType, TError> TokenScanner<TTokenType, TError>(Caret caret);
 
-public class Scanner<TTokenType, TError> where TTokenType : Enum
+public class Scanner<TTokenType, TError> : IEnumerable<Token<TTokenType, TError>> where TTokenType : Enum
 {
     private Caret _caret;
     private readonly IEnumerable<TokenScanner<TTokenType, TError>> _tokenScanners;
-    private readonly List<Token<TTokenType, TError>> _tokens;
 
     public Scanner(string content, IEnumerable<TokenScanner<TTokenType, TError>> tokenScanners)
     {
         _caret = new Caret(content);
         _tokenScanners = tokenScanners;
-        _tokens = new List<Token<TTokenType, TError>>();
     }
 
-    public IEnumerable<Token<TTokenType, TError>> Scan()
+    public IEnumerator<Token<TTokenType, TError>> GetEnumerator()
     {
-        _tokens.Clear();
         _caret.Reset();
 
-        for (; !_caret.IsEnd();) IterOverTokenScanners();
-        HandleUnexpectedSymbols();
+        for (; !_caret.IsEnd();)
+            if (IterOverTokenScanners() is { } iterResult)
+            {
+                if (iterResult.ErrorToken is { } errorToken) yield return errorToken;
+                yield return iterResult.Token;
+            }
 
-        return _tokens;
+        if (HandleUnexpectedSymbols() is { } e) yield return e;
     }
 
-    private void IterOverTokenScanners()
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    private struct IterResult
+    {
+        public Token<TTokenType, TError>? ErrorToken { get; init; }
+
+        public Token<TTokenType, TError> Token { get; init; }
+    }
+
+    private IterResult? IterOverTokenScanners()
     {
         foreach (var tokenScanner in _tokenScanners)
         {
@@ -35,14 +50,19 @@ public class Scanner<TTokenType, TError> where TTokenType : Enum
             var token = tokenScanner(tempCaret).ToToken(tempCaret.Span());
             if (token == null) continue;
 
-            HandleUnexpectedSymbols();
-            _tokens.Add(token);
+            var errorToken = HandleUnexpectedSymbols();
 
             UpdateCaret(tempCaret);
-            return;
+            return new IterResult { ErrorToken = errorToken, Token = token };
         }
 
         _caret.Eat();
+        return null;
+    }
+
+    private Token<TTokenType, TError>? HandleUnexpectedSymbols()
+    {
+        return _caret.Span().IsNotEmpty() ? new Token<TTokenType, TError>.InvalidToken(default, _caret.Span()) : null;
     }
 
     private Caret TempCaret()
@@ -57,11 +77,5 @@ public class Scanner<TTokenType, TError> where TTokenType : Enum
     {
         _caret = caret;
         _caret.ResetStartPos();
-    }
-
-    private void HandleUnexpectedSymbols()
-    {
-        if (_caret.Span().IsNotEmpty())
-            _tokens.Add(new Token<TTokenType, TError>.InvalidToken(default, _caret.Span()));
     }
 }

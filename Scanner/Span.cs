@@ -6,6 +6,12 @@ public struct Span
 
     public int End { get; private set; }
 
+    public Span()
+    {
+        Start = 0;
+        End = 0;
+    }
+
     internal bool IsEmpty()
     {
         return End <= Start;

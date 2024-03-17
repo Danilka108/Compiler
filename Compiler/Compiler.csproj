@@ -29,6 +29,7 @@
         <PackageReference Include="Material.Avalonia.DataGrid" Version="3.4.0"/>
         <PackageReference Include="Material.Avalonia.Dialogs" Version="3.4.0"/>
         <PackageReference Include="Material.Icons.Avalonia" Version="2.1.0"/>
+        <PackageReference Include="Optional" Version="5.0.0-alpha"/>
         <PackageReference Include="ReactiveUI" Version="19.5.41"/>
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41"/>
         <PackageReference Include="TextMateSharp.Grammars" Version="1.0.56"/>

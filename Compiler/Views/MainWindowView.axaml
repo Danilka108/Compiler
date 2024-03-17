@@ -76,6 +76,8 @@
 
                 <MenuItem Header="{x:Static lang:Resources.RunMenuItemHeader}" Command="{Binding Run}" />
 
+                <MenuItem Header="{x:Static lang:Resources.FixMenuItemHeader}" Command="{Binding Fix}" />
+
                 <MenuItem Header="{x:Static lang:Resources.DocsItemHeader}">
                     <MenuItem Header="{x:Static lang:Resources.CallDocsItemHeader}" Command="{Binding CallDocs}" />
                     <MenuItem Header="{x:Static lang:Resources.AboutProgramItemHeader}"
@@ -111,6 +113,9 @@
             </Button>
             <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarRun}" Command="{Binding Run}">
                 <materialIcons:MaterialIcon Kind="PlayCircleOutline" />
+            </Button>
+            <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarFix}" Command="{Binding Fix}">
+                <materialIcons:MaterialIcon Kind="Tools" />
             </Button>
             <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarCallDocs}"
                     Command="{Binding CallDocs}">

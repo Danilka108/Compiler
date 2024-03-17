@@ -11,7 +11,5 @@ public class EditorTokenViewModel(CaretPos caretPos, Token<TokenType, TokenError
 
     public string Code => Token is Token<TokenType, TokenError>.ValidToken t ? ((int)t.Type).ToString() : "";
 
-    public string Value => Token is Token<TokenType, TokenError>.ValidToken validToken
-        ? content[validToken.Span.Start..validToken.Span.End]
-        : "";
+    public string Value => content[Token.Span.Start..Token.Span.End];
 }
