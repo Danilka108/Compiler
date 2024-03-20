@@ -12,6 +12,12 @@ public struct Span
         End = 0;
     }
 
+    public Span(int start, int end)
+    {
+        Start = start;
+        End = end;
+    }
+
     internal bool IsEmpty()
     {
         return End <= Start;

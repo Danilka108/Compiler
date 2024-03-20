@@ -24,8 +24,8 @@ public class Fixer
 
         while (true)
         {
-            var newContent = FixParserErrors(content);
-            if (newContent == content) break;
+            var (stop, newContent) = FixParserErrors(content);
+            if (stop) break;
 
             content = newContent;
         }
@@ -33,12 +33,12 @@ public class Fixer
         return content;
     }
 
-    private string FixParserErrors(string content)
+    private (bool, string) FixParserErrors(string content)
     {
         var tokens = new Scanner<TokenType, TokenError>(content, TokensScanners.TokenScanners);
         var parser = new Parser(tokens);
 
-        foreach (var parseError in parser)
+        foreach (var parseError in parser.Parse())
         {
             var replacement = parseError.Type switch
             {
@@ -50,14 +50,26 @@ public class Fixer
                 ParseErrorType.AssignmentOperatorExpected => "=",
                 ParseErrorType.StringLiteralExpected => "\"change me\"",
                 ParseErrorType.OperatorEndExpected => ";",
-                ParseErrorType.NothingExpected => ""
+                ParseErrorType.NothingExpected => "",
+                ParseErrorType.SeparatorExpected => " "
             };
 
-            // newContent.Remove(parseError.Span.Start, parseError.Span.End - parseError.Span.Start);
-            return content.Insert(parseError.Span.Start, replacement);
+            if (parseError.Type is ParseErrorType.NothingExpected)
+                return (false,
+                    content.Remove(parseError.Span.Start, parseError.Span.End - parseError.Span.Start)
+                        .Insert(parseError.Span.Start, replacement));
+
+            // if (parseError.Type is ParseErrorType.TypeDividerExpected || parseError.Type is ParseErrorType.LinkExpected || parseError.Type is ParseErrorType.LinkExpected)
+            // return (false,
+            //     content
+            //         .Insert(parseError.Span.Start, replacement));
+
+            return (false, content.Remove(parseError.Span.Start, parseError.Span.End - parseError.Span.Start)
+                .Insert(parseError.Span.Start, replacement));
+            // return (false, content.Insert(parseError.Span.End, replacement));
         }
 
-        return content;
+        return (true, content);
     }
 
     private string FixTokenErrors()

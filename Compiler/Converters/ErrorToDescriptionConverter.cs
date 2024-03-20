@@ -26,7 +26,9 @@ public class ErrorToDescriptionConverter : IValueConverter
             { ParseErrorType.StrTypeExpected, Lang.Resources.StrTypeExpected },
             { ParseErrorType.AssignmentOperatorExpected, Lang.Resources.AssignmentOperatorExpected },
             { ParseErrorType.StringLiteralExpected, Lang.Resources.StringLiteralExpected },
-            { ParseErrorType.OperatorEndExpected, Lang.Resources.OperatorEndExpected }
+            { ParseErrorType.OperatorEndExpected, Lang.Resources.OperatorEndExpected },
+            { ParseErrorType.NothingExpected, Lang.Resources.NothingExpected },
+            { ParseErrorType.SeparatorExpected, Lang.Resources.SeparatorExpected }
         };
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -7,7 +6,6 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using DynamicData;
-using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Scanner;
@@ -102,6 +100,9 @@ public struct ConfirmSaveParams
 
 public class EditorViewModel : ViewModelBase
 {
+// static string EXAMPLE_TEXT = """const id: &str = """;
+    private static readonly string TextExample = """const ba d: &str = "bad2";""";
+
     public IEditorsSet EditorsSet { get; }
 
     private readonly IFileSaver _fileSaver;
@@ -240,6 +241,11 @@ public class EditorViewModel : ViewModelBase
             ).ToPropertyEx(this, vm => vm.MayBeSaved);
     }
 
+    public void SetExample()
+    {
+        TextEditor?.UpdateText(TextExample);
+    }
+
     public void Fix()
     {
         if (TextEditor == null) return;
@@ -258,7 +264,7 @@ public class EditorViewModel : ViewModelBase
         var tokens = scanner.ToArray();
 
         var parser = new Parser(tokens);
-        var parseErrors = parser.ToArray();
+        var parseErrors = parser.Parse().ToEnumerable().ToArray();
 
         var tokenViewModels = tokens.Select(token =>
             new EditorTokenViewModel(editor.OffsetToCaretPos(token.Span.Start), token, editor.Document.Text));

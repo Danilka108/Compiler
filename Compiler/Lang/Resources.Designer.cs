@@ -615,6 +615,12 @@ namespace Compiler.Lang {
             }
         }
         
+        public static string SeparatorExpected {
+            get {
+                return ResourceManager.GetString("SeparatorExpected", resourceCulture);
+            }
+        }
+        
         public static string ParseErrorsTab {
             get {
                 return ResourceManager.GetString("ParseErrorsTab", resourceCulture);

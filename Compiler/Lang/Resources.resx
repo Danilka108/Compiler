@@ -308,6 +308,9 @@
     <data name="NothingExpected" xml:space="preserve">
         <value>nothing expected</value>
     </data>
+    <data name="SeparatorExpected" xml:space="preserve">
+        <value>separator expected</value>
+    </data>
     <data name="ParseErrorsTab" xml:space="preserve">
         <value>Parse errors</value>
     </data>

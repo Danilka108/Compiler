@@ -300,4 +300,7 @@
     <data name="NothingExpected" xml:space="preserve">
         <value>ничего не ожидается</value>
     </data>
+    <data name="SeparatorExpected" xml:space="preserve">
+        <value>разделитель ожидается</value>
+    </data>
 </root>
