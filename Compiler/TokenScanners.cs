@@ -56,13 +56,18 @@ public static class TokensScanners
 
     private static ScanResult ScanIdentifier(Caret caret)
     {
-        if (!caret.TryEatWhile(char.IsLetterOrDigit)) return ScanResult.Nothing();
+        if (!caret.TryEat(s => char.IsLetter(s) || s == '_')) return ScanResult.Nothing();
 
-        var value = caret.Slice();
+        caret.TryEatWhile(s => char.IsLetterOrDigit(s) || s == '_');
+        // if (!caret.TryEatWhile(s => char.IsLetterOrDigit(s) || s == '_'))
+        //     return ScanResult.Error();
 
-        return value.Length > 0 && char.IsLetter(value[0])
-            ? ScanResult.Token(TokenType.Identifier)
-            : ScanResult.Error(TokenError.IdentifierCanOnlyStartWithANumber);
+        return ScanResult.Token(TokenType.Identifier);
+        // var value = caret.Slice();
+        //
+        // return value.Length > 0 && char.IsLetter(value[0])
+        //     ? ScanResult.Token(TokenType.Identifier)
+        //     : ScanResult.Error(TokenError.IdentifierCanOnlyStartWithANumber);
     }
 
     private static ScanResult ScanOneSymbolToken(Caret caret, char symbol, TokenType type)

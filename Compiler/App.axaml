@@ -19,7 +19,7 @@
 
         <converters:FileNameConverter x:Key="FileNameConverter" />
         <converters:MayBeSavedToIconKindConverter x:Key="MayBeSavedToCloseIconConverter" />
-        <converters:TokenToTokenTypeConverter x:Key="TokenToTokenTypeConverter" />
+        <converters:LexemeToLexemeDescriptionConverter x:Key="LexemeToLexemeDescriptionConverter" />
         <converters:ErrorToDescriptionConverter x:Key="ErrorToDescriptionConverter" />
 
         <!-- <ResourceDictionary> -->

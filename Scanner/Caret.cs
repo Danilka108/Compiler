@@ -48,6 +48,17 @@ public class Caret
         return true;
     }
 
+    public bool TryEat(Func<char, bool> predicate)
+    {
+        while (GetCurrentSymbol() is { } currentSymbol && predicate(currentSymbol))
+        {
+            _span.MoveEndPos();
+            return true;
+        }
+
+        return false;
+    }
+
     public bool TryEat(char symbol, char nextSymbol)
     {
         if (GetCurrentSymbol() != symbol || GetNextSymbol() != nextSymbol) return false;
