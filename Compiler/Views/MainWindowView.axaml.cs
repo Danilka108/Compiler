@@ -39,7 +39,7 @@ public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>, IProg
             this
                 .BindInteraction(ViewModel, vm => vm.OpenAboutProgram, async context =>
                 {
-                    await ShowDialog(new DocsWindowView());
+                    // await ShowDialog(new DocsWindowView());
                     context.SetOutput(Unit.Default);
                 })
                 .DisposeWith(d);

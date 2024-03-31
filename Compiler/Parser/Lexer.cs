@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DynamicData;
 
-namespace Compiler.parser;
+namespace Compiler.Parser;
 
 using LexemeEater = Func<Caret.Eater, LexemeType?>;
 
@@ -27,36 +26,54 @@ public class Lexer
         var caret = new Caret(content);
         var lexemes = new List<Lexeme>();
 
-        while (!caret.IsEnd()) lexemes.Add(OnNextIteration(caret));
+        while (!caret.IsEnd())
+        {
+            var lexeme = LexemeEaters
+                .Select(lexemeEater => EatLexeme(caret, lexemeEater))
+                .OfType<Lexeme>()
+                .FirstOrDefault();
+
+            if (lexeme is not null)
+            {
+                lexemes.Add(lexeme);
+            }
+            else
+            {
+                lexemes.Add(InvalidLexemeType.UnexpectedSymbol.IntoLexeme(caret.Span().ShiftEnd(1)));
+                caret.Move();
+            }
+        }
 
         return lexemes;
     }
 
-    private static List<Lexeme> OnNextIteration(Caret caret)
+    private static Lexeme? OnNextIteration(Caret caret)
     {
-        foreach (var lexemeEater in LexemeEaters)
-        {
-            var newLexemes = EatLexeme(caret, lexemeEater);
-            if (newLexemes.Count > 0) return newLexemes;
-        }
-
-        caret.Move();
-        return [];
+        return LexemeEaters.Select(lexemeEater => EatLexeme(caret, lexemeEater)).OfType<Lexeme>().FirstOrDefault();
+        // foreach (var lexemeEater in LexemeEaters)
+        // {
+        //     var newLexeme = EatLexeme(caret, lexemeEater);
+        //     // if (newLexemes.Count > 0) return newLexemes;
+        //     if (newLexeme is not null) return newLexeme;
+        // }
+        //
+        // // caret.Move();
+        // return null;
     }
 
-    private static List<Lexeme> EatLexeme(Caret caret, Func<Caret.Eater, LexemeType?> eatFunc)
+    private static Lexeme? EatLexeme(Caret caret, LexemeEater eatFunc)
     {
         var eater = caret.StartEating();
 
         try
         {
             return eatFunc(eater) is { } lexemeType
-                ? HandleEatingResult(caret.FinishEating(eater), lexemeType)
-                : [];
+                ? lexemeType.IntoLexeme(caret.FinishEating(eater).NewSpan)
+                : null;
         }
         catch (EatException ex)
         {
-            return [ex.Error.IntoLexeme(caret.FinishEating(eater).NewSpan)];
+            return ex.Error.IntoLexeme(caret.FinishEating(eater).NewSpan);
         }
     }
 
@@ -69,6 +86,32 @@ public class Lexer
 
         return [lexeme];
     }
+
+    // private static List<Lexeme> EatLexeme(Caret caret, LexemeEater eatFunc)
+    // {
+    //     var eater = caret.StartEating();
+    //
+    //     try
+    //     {
+    //         return eatFunc(eater) is { } lexemeType
+    //             ? HandleEatingResult(caret.FinishEating(eater), lexemeType)
+    //             : [];
+    //     }
+    //     catch (EatException ex)
+    //     {
+    //         return [ex.Error.IntoLexeme(caret.FinishEating(eater).NewSpan)];
+    //     }
+    // }
+    //
+    // private static List<Lexeme> HandleEatingResult(Caret.EatingResult eatingResult, LexemeType lexemeType)
+    // {
+    //     var lexeme = lexemeType.IntoLexeme(eatingResult.NewSpan);
+    //
+    //     if (eatingResult.OldSpan.IsNotEmpty())
+    //         return [InvalidLexemeType.UnexpectedSymbol.IntoLexeme(eatingResult.OldSpan), lexeme];
+    //
+    //     return [lexeme];
+    // }
 
     private class EatException : Exception
     {
@@ -118,7 +161,7 @@ public class Lexer
 
     private static LexemeType? TryEatStrKeyword(Caret.Eater eater)
     {
-        return eater.Eat("str") ? LexemeType.ConstKeyword : null;
+        return eater.Eat("str") ? LexemeType.StrKeyword : null;
     }
 
     private static LexemeType? TryEatAmpersand(Caret.Eater eater)

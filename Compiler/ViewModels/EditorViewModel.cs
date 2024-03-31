@@ -5,11 +5,10 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
-using Compiler.parser;
-using DynamicData;
+using AvaloniaEdit.Utils;
+using Compiler.Parser;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Scanner;
 using Unit = System.Reactive.Unit;
 
 namespace Compiler.ViewModels;
@@ -249,12 +248,10 @@ public class EditorViewModel : ViewModelBase
 
     public void Fix()
     {
-        // if (TextEditor == null) return;
-        //
-        // var fixer = new Fixer(TextEditor.Document.Text);
-        // var newText = fixer.Fix();
-        //
-        // TextEditor.UpdateText(newText);
+        if (TextEditor == null) return;
+
+        var newText = Fixer.Fix(TextEditor.Document.Text);
+        TextEditor.UpdateText(newText);
     }
 
     public void Run()
@@ -264,19 +261,19 @@ public class EditorViewModel : ViewModelBase
         // var scanner = new Scanner<TokenType, TokenError>(editor.Document.Text, TokensScanners.TokenScanners);
         var lexemes = Lexer.Scan(editor.Document.Text).ToArray();
 
-        // var parser = new Parser(tokens);
-        // var parseErrors = parser.Parse().ToEnumerable().ToArray();
+        var parseErrors = Parser.Parser.Scan(editor.Document.Text).ToArray();
 
         var tokenViewModels = lexemes.Select(lexeme =>
             new EditorTokenViewModel(editor.OffsetToCaretPos(lexeme.Span.Start), lexeme, editor.Document.Text));
 
-        var errorViewModels = lexemes
-            .OfType<Lexeme.Invalid>()
-            .Select(invalidLexeme => new EditorErrorViewModel
+        // var errorViewModels = lexemes
+        //     .OfType<Lexeme.Invalid>()
+        var errorViewModels = parseErrors
+            .Select(error => new EditorErrorViewModel
             {
-                CaretPos = editor.OffsetToCaretPos(invalidLexeme.Span.Start),
-                InvalidLexemeType = invalidLexeme.Error,
-                Span = invalidLexeme.Span
+                CaretPos = editor.OffsetToCaretPos(error.Span.Start),
+                ErrorType = error.Type,
+                Span = error.Span
             }).ToArray();
 
         // var parseErrorViewModels = parseErrors.Select(error =>
@@ -287,13 +284,13 @@ public class EditorViewModel : ViewModelBase
         HasErrors = errorViewModels.Length != 0;
 
         Errors.Clear();
-        Errors.Add(errorViewModels);
+        Errors.AddRange(errorViewModels);
 
         Tokens.Clear();
-        Tokens.Add(tokenViewModels);
+        Tokens.AddRange(tokenViewModels);
 
         // ParseErrors.Clear();
-        // ParseErrors.Add(parseErrorViewModels);
+        // ParseErrors.AddRange(parseErrorViewModels);
     }
 
     public override bool Equals(object? obj)

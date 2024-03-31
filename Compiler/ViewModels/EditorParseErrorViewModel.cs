@@ -1,4 +1,4 @@
-using Span = Scanner.Span;
+using Compiler.Parser;
 
 namespace Compiler.ViewModels;
 

@@ -1,6 +1,6 @@
 using System;
 
-namespace Compiler.parser;
+namespace Compiler.Parser;
 
 public struct MovableSpan
 {

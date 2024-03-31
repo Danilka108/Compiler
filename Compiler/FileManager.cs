@@ -10,14 +10,17 @@ public class FileManager(IStorageProvider storageProvider) : IFileSaver
 {
     public async Task AsyncSave(string path, string content)
     {
-        var file = await storageProvider.TryGetFileFromPathAsync(path);
-        if (file == null)
-            // TODO
-            return;
+        // var file = await storageProvider.TryGetFileFromPathAsync(path);
+        // storageProvider.
+        // if (file == null)
+        //     // TODO
+        //     return;
 
         try
         {
-            await TryWriteFile(file, content);
+            await using var outputFile = new StreamWriter(path);
+            await outputFile.WriteAsync(content);
+            // await TryWriteFile(file, content);
         }
         catch (Exception)
         {

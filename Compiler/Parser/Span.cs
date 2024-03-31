@@ -1,6 +1,6 @@
 using System;
 
-namespace Compiler.parser;
+namespace Compiler.Parser;
 
 public readonly struct Span
 {
@@ -21,6 +21,8 @@ public readonly struct Span
         Start = start;
         End = end;
     }
+
+    public int Count => End - Start;
 
     public bool IsEmpty()
     {

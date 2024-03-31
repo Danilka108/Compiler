@@ -139,7 +139,7 @@
         <value>Идентификатор может начинаться только с буквы</value>
     </data>
     <data name="TokenErrorUnexpectedSymbol" xml:space="preserve">
-        <value>Неопределенный символ(ы)</value>
+        <value>Неопределенный символ</value>
     </data>
     <data name="TokenErrorUnterminatedString" xml:space="preserve">
         <value>Незакрытая строка</value>
@@ -302,5 +302,11 @@
     </data>
     <data name="SeparatorExpected" xml:space="preserve">
         <value>разделитель ожидается</value>
+    </data>
+    <data name="ParseErrorsTab" xml:space="preserve">
+        <value>проанализировать ошибки</value>
+    </data>
+    <data name="InvalidLexeme" xml:space="preserve">
+        <value>неверная лексема</value>
     </data>
 </root>

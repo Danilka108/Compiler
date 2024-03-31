@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using ReactiveUI;
 
-namespace Compiler.parser;
+namespace Compiler.Parser;
 
 public class Caret
 {
@@ -39,7 +39,7 @@ public class Caret
 
     public void Move()
     {
-        _span = _span.ShiftEnd(1);
+        _span = _span.ShiftEnd(1).ShiftStartToEnd();
     }
 
     public Span Span()

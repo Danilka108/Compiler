@@ -273,7 +273,7 @@
         <value>Separator</value>
     </data>
     <data name="TokenErrorUnexpectedSymbol" xml:space="preserve">
-        <value>Unexpected symbol(s)</value>
+        <value>Unexpected symbol</value>
     </data>
     <data name="TokenErrorUnterminatedString" xml:space="preserve">
         <value>Unterminated string</value>
@@ -313,5 +313,8 @@
     </data>
     <data name="ParseErrorsTab" xml:space="preserve">
         <value>Parse errors</value>
+    </data>
+    <data name="InvalidLexeme" xml:space="preserve">
+        <value>invalid lexeme</value>
     </data>
 </root>

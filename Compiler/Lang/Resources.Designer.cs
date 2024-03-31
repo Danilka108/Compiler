@@ -626,5 +626,11 @@ namespace Compiler.Lang {
                 return ResourceManager.GetString("ParseErrorsTab", resourceCulture);
             }
         }
+        
+        public static string InvalidLexeme {
+            get {
+                return ResourceManager.GetString("InvalidLexeme", resourceCulture);
+            }
+        }
     }
 }

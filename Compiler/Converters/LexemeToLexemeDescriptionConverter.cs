@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Compiler.parser;
+using Compiler.Parser;
 using Scanner;
 
 namespace Compiler.Converters;
@@ -30,7 +30,7 @@ public class LexemeToLexemeDescriptionConverter : IValueConverter
         return token switch
         {
             Lexeme.Valid validToken => TokenTypes[validToken.Type],
-            Lexeme.Invalid => "invalid token"
+            Lexeme.Invalid => Lang.Resources.InvalidLexeme,
         };
     }
 

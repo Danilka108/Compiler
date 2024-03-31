@@ -1,5 +1,5 @@
 using System;
-using Compiler.parser;
+using Compiler.Parser;
 using Scanner;
 
 namespace Compiler.ViewModels;
