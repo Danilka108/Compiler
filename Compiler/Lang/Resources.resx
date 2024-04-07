@@ -317,4 +317,13 @@
     <data name="InvalidLexeme" xml:space="preserve">
         <value>invalid lexeme</value>
     </data>
+    <data name="ParsingErrorLexemeExpected" xml:space="preserve">
+        <value>{0} lexeme expected, tail: "{1}"</value>
+    </data>
+    <data name="ParsingErrorNothingExpected" xml:space="preserve">
+        <value>nothing expected, tail: "{1}"</value>
+    </data>
+    <data name="ParsingErrorInvalidLexeme" xml:space="preserve">
+        <value>invalid lexeme ({0}), tail: "{1}"</value>
+    </data>
 </root>

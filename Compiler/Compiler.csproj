@@ -51,6 +51,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Analysis\Analysis.csproj"/>
         <ProjectReference Include="..\Scanner\Scanner.csproj"/>
     </ItemGroup>
 </Project>

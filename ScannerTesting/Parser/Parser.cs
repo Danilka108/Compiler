@@ -124,45 +124,45 @@ public class Parser
         if (Switch(nextLexeme) is not { } errorType) return null;
         var error = new ParseError(errorType, span);
 
-        // switch (error.Type)
-        // {
-        //     case (ParseErrorType.UnexpectedSymbol):
-        //         break;
-        //     case (ParseErrorType.UnterminatedString):
-        //         break;
-        //     case (ParseErrorType.ConstKeywordExpected):
-        //         State.SwitchToLexeme(LexemeType.ConstKeyword);
-        //         break;
-        //     case (ParseErrorType.IdentifierExpected):
-        //         State.SwitchToLexeme(LexemeType.Identifier);
-        //         break;
-        //     case (ParseErrorType.TypeDividerExpected):
-        //         State.SwitchToLexeme(LexemeType.Colon);
-        //         break;
-        //     case (ParseErrorType.LinkExpected):
-        //         State.SwitchToLexeme(LexemeType.Ampersand);
-        //         break;
-        //     case (ParseErrorType.StrTypeExpected):
-        //         State.SwitchToLexeme(LexemeType.StrKeyword);
-        //         break;
-        //     case (ParseErrorType.AssignmentOperatorExpected):
-        //         State.SwitchToLexeme(LexemeType.AssignmentOperator);
-        //         break;
-        //     case (ParseErrorType.StringLiteralExpected):
-        //         State.SwitchToLexeme(LexemeType.StringLiteral);
-        //         break;
-        //     case (ParseErrorType.OperatorEndExpected):
-        //         State.SwitchToLexeme(LexemeType.OperatorEnd);
-        //         break;
-        //     case (ParseErrorType.NothingExpected):
-        //         State.SwitchToEnd();
-        //         break;
-        //     case ParseErrorType.SeparatorExpected:
-        //         break;
-        //     // default:
-        //     //     break;
-        //     // throw new ArgumentOutOfRangeException();
-        // }
+        switch (error.Type)
+        {
+            case (ParseErrorType.UnexpectedSymbol):
+                break;
+            case (ParseErrorType.UnterminatedString):
+                break;
+            case (ParseErrorType.ConstKeywordExpected):
+                State.SwitchToLexeme(LexemeType.ConstKeyword);
+                break;
+            case (ParseErrorType.IdentifierExpected):
+                State.SwitchToLexeme(LexemeType.Identifier);
+                break;
+            case (ParseErrorType.TypeDividerExpected):
+                State.SwitchToLexeme(LexemeType.Colon);
+                break;
+            case (ParseErrorType.LinkExpected):
+                State.SwitchToLexeme(LexemeType.Ampersand);
+                break;
+            case (ParseErrorType.StrTypeExpected):
+                State.SwitchToLexeme(LexemeType.StrKeyword);
+                break;
+            case (ParseErrorType.AssignmentOperatorExpected):
+                State.SwitchToLexeme(LexemeType.AssignmentOperator);
+                break;
+            case (ParseErrorType.StringLiteralExpected):
+                State.SwitchToLexeme(LexemeType.StringLiteral);
+                break;
+            case (ParseErrorType.OperatorEndExpected):
+                State.SwitchToLexeme(LexemeType.OperatorEnd);
+                break;
+            case (ParseErrorType.NothingExpected):
+                State.SwitchToEnd();
+                break;
+            case ParseErrorType.SeparatorExpected:
+                break;
+            // default:
+            //     break;
+            // throw new ArgumentOutOfRangeException();
+        }
 
         return error;
     }

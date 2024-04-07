@@ -10,8 +10,7 @@ public static class Fixer
         {
             var errors = Parser.Scan(content).ToArray();
             if (errors.Length == 0) return content;
-
-            content = errors.Aggregate(content, FixParseErrors);
+            content = FixParseErrors(content, errors[0]);
         }
     }
 

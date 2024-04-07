@@ -10,27 +10,27 @@ namespace Compiler.Converters;
 
 public class LexemeToLexemeDescriptionConverter : IValueConverter
 {
-    private static IDictionary<LexemeType, string> TokenTypes = new Dictionary<LexemeType, string>
+    private static IDictionary<Parser.LexemeType, string> TokenTypes = new Dictionary<Parser.LexemeType, string>
     {
-        { LexemeType.Ampersand, Lang.Resources.TokenTypeAmpersand },
-        { LexemeType.ConstKeyword, Lang.Resources.TokenTypeConstKeyword },
-        { LexemeType.Identifier, Lang.Resources.TokenTypeIdentifier },
-        { LexemeType.OperatorEnd, Lang.Resources.TokenTypeOperatorEnd },
-        { LexemeType.AssignmentOperator, Lang.Resources.TokenTypeAssignmentOperator },
-        { LexemeType.Colon, Lang.Resources.TokenTypeColon },
-        { LexemeType.Separator, Lang.Resources.TokenTypeSeparator },
-        { LexemeType.StringLiteral, Lang.Resources.TokenTypeStringLiteral },
-        { LexemeType.StrKeyword, Lang.Resources.TokenTypeStrKeyword }
+        { Parser.LexemeType.Ampersand, Lang.Resources.TokenTypeAmpersand },
+        { Parser.LexemeType.ConstKeyword, Lang.Resources.TokenTypeConstKeyword },
+        { Parser.LexemeType.Identifier, Lang.Resources.TokenTypeIdentifier },
+        { Parser.LexemeType.OperatorEnd, Lang.Resources.TokenTypeOperatorEnd },
+        { Parser.LexemeType.AssignmentOperator, Lang.Resources.TokenTypeAssignmentOperator },
+        { Parser.LexemeType.Colon, Lang.Resources.TokenTypeColon },
+        { Parser.LexemeType.Separator, Lang.Resources.TokenTypeSeparator },
+        { Parser.LexemeType.StringLiteral, Lang.Resources.TokenTypeStringLiteral },
+        { Parser.LexemeType.StrKeyword, Lang.Resources.TokenTypeStrKeyword }
     };
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not Lexeme token) return BindingNotification.UnsetValue;
+        if (value is not LexemeType token) return BindingNotification.UnsetValue;
 
         return token switch
         {
-            Lexeme.Valid validToken => TokenTypes[validToken.Type],
-            Lexeme.Invalid => Lang.Resources.InvalidLexeme,
+            LexemeType.Valid validToken => TokenTypes[validToken.Type],
+            LexemeType.Invalid => Lang.Resources.InvalidLexeme,
         };
     }
 

@@ -159,7 +159,7 @@ public class EditorViewModel : ViewModelBase
         {
             if (value >= 0 && value < Tokens.Count)
             {
-                var span = Tokens[value].Lexeme.Span;
+                var span = Tokens[value].LexemeType.Span;
                 TextEditor?.Select(span.Start, span.End);
             }
 
@@ -261,18 +261,21 @@ public class EditorViewModel : ViewModelBase
         // var scanner = new Scanner<TokenType, TokenError>(editor.Document.Text, TokensScanners.TokenScanners);
         var lexemes = Lexer.Scan(editor.Document.Text).ToArray();
 
-        var parseErrors = Parser.Parser.Scan(editor.Document.Text).ToArray();
+        // var parseErrors = Parser.Parser.Scan(editor.Document.Text).ToArray();
+        var lexemes2 = Parsing.Lexing.Lexer.Scan(editor.Document.Text).ToArray();
 
         var tokenViewModels = lexemes.Select(lexeme =>
             new EditorTokenViewModel(editor.OffsetToCaretPos(lexeme.Span.Start), lexeme, editor.Document.Text));
 
+        var parseErrors = Parsing.Parser<Parsing.State>.Parse(lexemes2);
+
         // var errorViewModels = lexemes
         //     .OfType<Lexeme.Invalid>()
         var errorViewModels = parseErrors
-            .Select(error => new EditorErrorViewModel
+            .Select(error => new EditorErrorViewModel(editor.Document.Text)
             {
                 CaretPos = editor.OffsetToCaretPos(error.Span.Start),
-                ErrorType = error.Type,
+                Error = error,
                 Span = error.Span
             }).ToArray();
 

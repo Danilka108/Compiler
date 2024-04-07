@@ -38,7 +38,7 @@
                                             Binding="{Binding CaretPos.AsString}" />
                         <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
                                             Header="{x:Static lang:Resources.ErrorsDescriptionColumn}"
-                                            Binding="{Binding ErrorType, Converter={StaticResource ErrorToDescriptionConverter}}" />
+                                            Binding="{Binding ., Converter={StaticResource ErrorToDescriptionConverter}}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
@@ -61,7 +61,7 @@
                                             Binding="{Binding Value}" />
                         <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
                                             Header="{x:Static lang:Resources.TokensTypeColumn}"
-                                            Binding="{Binding Lexeme, Converter={StaticResource LexemeToLexemeDescriptionConverter}}" />
+                                            Binding="{Binding LexemeType, Converter={StaticResource LexemeToLexemeDescriptionConverter}}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

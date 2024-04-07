@@ -309,4 +309,13 @@
     <data name="InvalidLexeme" xml:space="preserve">
         <value>неверная лексема</value>
     </data>
+    <data name="ParsingErrorLexemeExpected" xml:space="preserve">
+        <value>ожидается лексема {0}, хвост: "{1}"</value>
+    </data>
+    <data name="ParsingErrorNothingExpected" xml:space="preserve">
+        <value>ничего не ожидается, хвост: "{1}"</value>
+    </data>
+    <data name="ParsingErrorInvalidLexeme" xml:space="preserve">
+        <value>неверная лексема ({0}), хвост: "{1}"</value>
+    </data>
 </root>
