@@ -221,65 +221,87 @@
     <data name="UntitledFileName" xml:space="preserve">
         <value>Untitled {0}</value>
     </data>
-    <data name="TokensTab" xml:space="preserve">
+    <data name="LexemesTab" xml:space="preserve">
         <value>Tokens</value>
     </data>
-    <data name="TokensCodeColumn" xml:space="preserve">
+    <data name="LexemesCodeColumn" xml:space="preserve">
         <value>Code</value>
     </data>
-    <data name="TokensTypeColumn" xml:space="preserve">
-        <value>Type</value>
+    <data name="LexemesLexemeTypeColumn" xml:space="preserve">
+        <value>Lexeme type</value>
     </data>
-    <data name="TokensTokenColumn" xml:space="preserve">
-        <value>Token</value>
+    <data name="LexemesValueColumn" xml:space="preserve">
+        <value>Value</value>
     </data>
     <data name="ErrorsTab" xml:space="preserve">
         <value>Errors</value>
     </data>
-    <data name="ErrorsPositionColumn" xml:space="preserve">
+    <data name="ErrorsTailColumn" xml:space="preserve">
+        <value>Tail</value>
+    </data>
+    <data name="ErrorsKindColumn" xml:space="preserve">
+        <value>Kind</value>
+    </data>
+    <data name="ErrorsFoundColumn" xml:space="preserve">
+        <value>Found</value>
+    </data>
+    <data name="ErrorsExpectedLexemeColumn" xml:space="preserve">
+        <value>Expected lexeme</value>
+    </data>
+    <data name="ErrorKindInvalidLexeme" xml:space="preserve">
+        <value>Invalid Lexeme {0}</value>
+    </data>
+    <data name="ErrorKindNotFound" xml:space="preserve">
+        <value>Not Found</value>
+    </data>
+    <data name="ErrorKindNotFoundImmediately" xml:space="preserve">
+        <value>Not Found Immediately</value>
+    </data>
+    <data name="ErrorKindExhausted" xml:space="preserve">
+        <value>Lexemes Exhausted</value>
+    </data>
+
+    <data name="PositionColumn" xml:space="preserve">
         <value>Position</value>
+    </data>
+    <data name="CaretPosColumnValue" xml:space="preserve">
+        <value>row {0} col {1}</value>
     </data>
     <data name="TokensPositionColumn" xml:space="preserve">
         <value>Position</value>
     </data>
-    <data name="ErrorsDescriptionColumn" xml:space="preserve">
-        <value>Description</value>
-    </data>
-    <data name="TokenTypeConstKeyword" xml:space="preserve">
+    <data name="LexemeTypeConstKeyword" xml:space="preserve">
         <value>Const keyword</value>
     </data>
-    <data name="TokenTypeIdentifier" xml:space="preserve">
+    <data name="LexemeTypeIdentifier" xml:space="preserve">
         <value>Identifier</value>
     </data>
-    <data name="TokenTypeColon" xml:space="preserve">
+    <data name="LexemeTypeColon" xml:space="preserve">
         <value>Colon</value>
     </data>
-    <data name="TokenTypeAmpersand" xml:space="preserve">
+    <data name="LexemeTypeAmpersand" xml:space="preserve">
         <value>Ampersand</value>
     </data>
-    <data name="TokenTypeStrKeyword" xml:space="preserve">
+    <data name="LexemeTypeStrKeyword" xml:space="preserve">
         <value>str keyword</value>
     </data>
-    <data name="TokenTypeAssignmentOperator" xml:space="preserve">
-        <value>Assignment operator</value>
+    <data name="LexemeTypeEqual" xml:space="preserve">
+        <value>Equal</value>
     </data>
-    <data name="TokenTypeStringLiteral" xml:space="preserve">
+    <data name="LexemeTypeStringLiteral" xml:space="preserve">
         <value>String literal</value>
     </data>
-    <data name="TokenTypeOperatorEnd" xml:space="preserve">
+    <data name="LexemeTypeSemicolon" xml:space="preserve">
         <value>Operator end</value>
     </data>
-    <data name="TokenTypeSeparator" xml:space="preserve">
+    <data name="LexemeTypeSeparator" xml:space="preserve">
         <value>Separator</value>
     </data>
-    <data name="TokenErrorUnexpectedSymbol" xml:space="preserve">
+    <data name="LexemeTypeUnexpectedSymbol" xml:space="preserve">
         <value>Unexpected symbol</value>
     </data>
-    <data name="TokenErrorUnterminatedString" xml:space="preserve">
-        <value>Unterminated string</value>
-    </data>
-    <data name="TokenErrorIdentifierCanOnlyStartWithALetter" xml:space="preserve">
-        <value>Identifier can only start with a number</value>
+    <data name="LexemeTypeUnterminatedStringLiteral" xml:space="preserve">
+        <value>Unterminated string literal</value>
     </data>
     <data name="ConstKeywordExpected" xml:space="preserve">
         <value>Expected const keyword</value>
@@ -317,13 +339,13 @@
     <data name="InvalidLexeme" xml:space="preserve">
         <value>invalid lexeme</value>
     </data>
-    <data name="ParsingErrorLexemeExpected" xml:space="preserve">
-        <value>{0} lexeme expected, tail: "{1}"</value>
-    </data>
-    <data name="ParsingErrorNothingExpected" xml:space="preserve">
-        <value>nothing expected, tail: "{1}"</value>
-    </data>
-    <data name="ParsingErrorInvalidLexeme" xml:space="preserve">
-        <value>invalid lexeme ({0}), tail: "{1}"</value>
-    </data>
+    <!-- <data name="ParsingErrorLexemeExpected" xml:space="preserve"> -->
+    <!--     <value>{0} lexeme expected, tail: "{1}"</value> -->
+    <!-- </data> -->
+    <!-- <data name="ParsingErrorNothingExpected" xml:space="preserve"> -->
+    <!--     <value>nothing expected, tail: "{1}"</value> -->
+    <!-- </data> -->
+    <!-- <data name="ParsingErrorInvalidLexeme" xml:space="preserve"> -->
+    <!--     <value>invalid lexeme ({0}), tail: "{1}"</value> -->
+    <!-- </data> -->
 </root>

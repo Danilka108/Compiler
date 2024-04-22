@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
@@ -46,6 +48,46 @@ public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>, IProg
         });
     }
 
+    private void OpenAboutPage()
+    {
+        OpenBrowserWithHtml(HtmlPages.About);
+    }
+
+    public void OpenFormulationOfTheProblemPage(object sender, RoutedEventArgs e)
+    {
+        OpenBrowserWithHtml(HtmlPages.FormulationOfTheProblem);
+    }
+
+    private void OpenGrammarPage(object sender, RoutedEventArgs e)
+    {
+        OpenBrowserWithHtml(HtmlPages.Grammar);
+    }
+
+    private void OpenGrammarClassificationPage(object sender, RoutedEventArgs e)
+    {
+        OpenBrowserWithHtml(HtmlPages.GrammarClassification);
+    }
+
+    private void OpenAnalysisMethodPage(object sender, RoutedEventArgs e)
+    {
+        OpenBrowserWithHtml(HtmlPages.AnalysisMethod);
+    }
+
+    private void OpenDiagnosticAndErrorNeutralization(object sender, RoutedEventArgs e)
+    {
+        OpenBrowserWithHtml(HtmlPages.DiagnosticAndErrorNeutralization);
+    }
+
+    private void OpenSourcesListPage(object sender, RoutedEventArgs e)
+    {
+        OpenBrowserWithHtml(HtmlPages.SourcesList);
+    }
+
+    private void OpenSourceCodePage(object sender, RoutedEventArgs e)
+    {
+        OpenBrowserWithUrl(HtmlPages.SourceCodeUrl);
+    }
+
     private async void HandleClosing(object? sender, WindowClosingEventArgs e)
     {
         e.Cancel = true;
@@ -82,5 +124,45 @@ public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>, IProg
     {
         // Lang.Resources.Culture = new CultureInfo("ru");
         // InvalidateVisual();
+    }
+
+    private void OpenBrowserWithUrl(string url)
+    {
+        try
+        {
+            // Открываем браузер с временным файлом
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ошибка при открытии браузера: {ex.Message}");
+        }
+    }
+
+    private void OpenBrowserWithHtml(string htmlContent)
+    {
+        // Создаем временный файл с расширением .html
+        var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".html");
+
+        // Записываем HTML в файл
+        File.WriteAllText(tempFilePath, htmlContent);
+
+        try
+        {
+            // Открываем браузер с временным файлом
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = tempFilePath,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ошибка при открытии браузера: {ex.Message}");
+        }
     }
 }

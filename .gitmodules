@@ -1,0 +1,3 @@
+[submodule "CodeAnalysis"]
+	path = CodeAnalysis
+	url = git@github.com:Danilka108/CodeAnalysis.git

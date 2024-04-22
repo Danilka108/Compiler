@@ -52,16 +52,19 @@
                         </ItemsPanelTemplate>
                     </MenuItem.ItemsPanel>
 
-                    <MenuItem Header="{x:Static lang:Resources.ProblemFormulationMenuItemHeader}" />
-                    <MenuItem Header="{x:Static lang:Resources.GrammarMenuItemHeader}" />
-                    <MenuItem Header="{x:Static lang:Resources.GrammarClassificationMenuItemHeader}" />
-                    <MenuItem Header="{x:Static lang:Resources.AnalysisMethodMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.ProblemFormulationMenuItemHeader}"
+                              Click="OpenFormulationOfTheProblemPage" />
+                    <MenuItem Header="{x:Static lang:Resources.GrammarMenuItemHeader}" Click="OpenGrammarPage" />
+                    <MenuItem Header="{x:Static lang:Resources.GrammarClassificationMenuItemHeader}"
+                              Click="OpenGrammarClassificationPage" />
+                    <MenuItem Header="{x:Static lang:Resources.AnalysisMethodMenuItemHeader}"
+                              Click="OpenAnalysisMethodPage" />
                     <MenuItem Header="{x:Static lang:Resources.DiagnosticNeutralizationMenuItemHeader}"
-                              Command="{Binding Fix}" />
+                              Click="OpenDiagnosticAndErrorNeutralization" />
                     <MenuItem Header="{x:Static lang:Resources.TextExampleMenuItemHeader}"
                               Command="{Binding SetTextExample}" />
-                    <MenuItem Header="{x:Static lang:Resources.BibliographyMenuItemHeader}" />
-                    <MenuItem Header="{x:Static lang:Resources.SourceCodeMenuItemHeader}" />
+                    <MenuItem Header="{x:Static lang:Resources.BibliographyMenuItemHeader}" Click="OpenSourcesListPage" />
+                    <MenuItem Header="{x:Static lang:Resources.SourceCodeMenuItemHeader}" Click="OpenSourceCodePage" />
                     <MenuItem Header="{x:Static lang:Resources.TextSizeMenuItemHeader}">
                         <MenuItem Name="IncreaseTextSizeMenuItem"
                                   Header="{x:Static lang:Resources.IncreaseTextSizeMenuItemHeader}"

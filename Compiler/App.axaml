@@ -7,7 +7,6 @@
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:converters="clr-namespace:Compiler.Converters"
              RequestedThemeVariant="Default">
-    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
         <local:ViewLocator />
@@ -18,28 +17,21 @@
         <system:Double x:Key="ControlContentThemeFontSize">14</system:Double>
 
         <converters:FileNameConverter x:Key="FileNameConverter" />
+        <converters:CaretPosConverter x:Key="CaretPosConverter" />
         <converters:MayBeSavedToIconKindConverter x:Key="MayBeSavedToCloseIconConverter" />
-        <converters:LexemeToLexemeDescriptionConverter x:Key="LexemeToLexemeDescriptionConverter" />
-        <converters:ErrorToDescriptionConverter x:Key="ErrorToDescriptionConverter" />
-
-        <!-- <ResourceDictionary> -->
-        <!--     <ResourceDictionary.MergedDictionaries></ResourceDictionary.MergedDictionaries> -->
-        <!--      -->
-        <!-- </ResourceDictionary> -->
+        <converters:LexemeTypeConverter x:Key="LexemeTypeConverter" />
+        <converters:ErrorConverter x:Key="ErrorConverter" />
     </Application.Resources>
 
     <Application.Styles>
         <themes:MaterialTheme BaseTheme="Light" PrimaryColor="Purple" SecondaryColor="Lime" />
         <Style>
             <Style.Resources>
-                <!-- <SolidColorBrush x:Key="TextAreaSelectionBrush" Color="{DynamicResource MaterialPrimaryMidBrush}" /> -->
                 <SolidColorBrush x:Key="TextAreaSelectionBrush" Color="DarkBlue" />
             </Style.Resources>
         </Style>
 
         <avalonia:MaterialIconStyles />
         <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
-        <!-- <FluentTheme /> -->
-        <!-- <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/> -->
     </Application.Styles>
 </Application>

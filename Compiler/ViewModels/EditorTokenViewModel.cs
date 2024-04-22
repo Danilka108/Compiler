@@ -1,18 +1,16 @@
-using System;
-using Compiler.Parser;
-using Scanner;
+using CodeAnalysis;
+using Compiler.ConstExpr;
 
 namespace Compiler.ViewModels;
 
-public class EditorTokenViewModel(CaretPos caretPos, LexemeType lexemeType, string content) : ViewModelBase
+public class EditorTokenViewModel(ITextEditor editor, Lexeme<LexemeType> lexeme)
+    : ViewModelBase
 {
-    // public Token<TokenType, TokenError> Token { get; } = token;
-    public LexemeType LexemeType { get; } = lexemeType;
+    public Lexeme<LexemeType> Lexeme { get; } = lexeme;
 
-    public CaretPos CaretPos { get; } = caretPos;
+    public CaretPos CaretPos { get; } = editor.OffsetToCaretPos(lexeme.Span.Start);
 
-    // public string Code => Lexeme is Token<TokenType, TokenError>.ValidToken t ? ((int)t.Type).ToString() : "";
-    public string Code => LexemeType is LexemeType.Valid v ? ((int)v.Type).ToString() : "";
+    public string Code { get; } = ((int)lexeme.Type).ToString();
 
-    public string Value => content[LexemeType.Span.Start..LexemeType.Span.End];
+    public string Value { get; } = editor.Document.Text[lexeme.Span.Start..lexeme.Span.End];
 }

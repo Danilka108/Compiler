@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -203,7 +204,6 @@ public partial class EditorView : ReactiveUserControl<EditorViewModel>
             action();
         }
     }
-
 
     private void CaretPosChanged(object? sender, EventArgs e)
     {

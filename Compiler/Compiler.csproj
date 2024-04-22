@@ -51,7 +51,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Analysis\Analysis.csproj"/>
-        <ProjectReference Include="..\Scanner\Scanner.csproj"/>
+        <ProjectReference Include="..\CodeAnalysis\CodeAnalysis.csproj"/>
     </ItemGroup>
 </Project>

@@ -1,15 +1,24 @@
-using Compiler.Parser;
+using CodeAnalysis;
+using Compiler.ConstExpr;
 
 namespace Compiler.ViewModels;
 
-public class EditorErrorViewModel(string content) : ViewModelBase
+public class EditorErrorViewModel(ITextEditor editor, AnalyzerError<LexemeType> error)
+    : ViewModelBase
 {
-    public CaretPos CaretPos { get; init; }
+    public CaretPos CaretPos { get; } = editor.OffsetToCaretPos(error.Span.Start);
 
-    // public InvalidLexemeType InvalidLexemeType { get; init; }
-    public Parsing.ParsingError Error { get; init; }
+    public AnalyzerError<LexemeType> Error { get; } = error;
 
-    public string Tail => content[Error.TailStart..];
+    public LexemeType? LexemeType { get; } = error switch
+    {
+        AnalyzerError<LexemeType>.LexemesExhausted e => e.ExpectedLexemeType,
+        AnalyzerError<LexemeType>.LexemeNotFound e => e.ExpectedLexemeType,
+        AnalyzerError<LexemeType>.InvalidLexeme e => null,
+        AnalyzerError<LexemeType>.LexemeNotFoundImmediately e => e.ExpectedLexemeType,
+    };
 
-    public Parsing.Span Span { get; init; }
+    public string Found { get; } = editor.Document.Text.Substring(error.Span.Start, error.Span.Count);
+
+    public string Tail { get; } = editor.Document.Text[error.TailStart..];
 }

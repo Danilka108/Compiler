@@ -144,13 +144,13 @@
     <data name="TokenErrorUnterminatedString" xml:space="preserve">
         <value>Незакрытая строка</value>
     </data>
-    <data name="TokensCodeColumn" xml:space="preserve">
+    <data name="LexemesCodeColumn" xml:space="preserve">
         <value>Код</value>
     </data>
-    <data name="TokensTab" xml:space="preserve">
+    <data name="LexemesTab" xml:space="preserve">
         <value>Токены</value>
     </data>
-    <data name="TokensTokenColumn" xml:space="preserve">
+    <data name="LexemesValueColumn" xml:space="preserve">
         <value>Токен</value>
     </data>
     <data name="TokensTypeColumn" xml:space="preserve">

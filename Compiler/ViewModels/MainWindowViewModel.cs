@@ -117,8 +117,8 @@ public class MainWindowViewModel : ViewModelBase, IEditorsSet
         Delete = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.Delete), isFileSelected);
         SelectAll = ReactiveCommand.Create(() => CurrentEditor?.Edit(EditAction.SelectAll), isFileSelected);
 
-        CallDocs = ReactiveCommand.CreateFromTask(async () => { await OpenDocs.Handle(Unit.Default); });
-        ShowAboutProgram = ReactiveCommand.CreateFromTask(async () => { await OpenAboutProgram.Handle(Unit.Default); });
+        // CallDocs = ReactiveCommand.CreateFromTask(async () => { await OpenDocs.Handle(Unit.Default); });
+        // ShowAboutProgram = ReactiveCommand.CreateFromTask(async () => { await OpenAboutProgram.Handle(Unit.Default); });
 
         ZoomIn = ReactiveCommand.Create(() => { FontSize++; });
         ZoomOut = ReactiveCommand.Create(() => { FontSize--; });
