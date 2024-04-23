@@ -123,11 +123,11 @@
                 <materialIcons:MaterialIcon Kind="Tools" />
             </Button>
             <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarCallDocs}"
-                    Command="{Binding CallDocs}">
+                    Click="OpenDocsPage">
                 <materialIcons:MaterialIcon Kind="HelpCircleOutline" />
             </Button>
             <Button Classes="Outline" ToolTip.Tip="{x:Static lang:Resources.ToolbarAboutProgram}"
-                    Command="{Binding ShowAboutProgram}">
+                    Click="OpenAboutPage">
                 <materialIcons:MaterialIcon Kind="InformationVariantCircleOutline" />
             </Button>
         </StackPanel>

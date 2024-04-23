@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Грамматика строковых констант в языке Rust</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            color: #555;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        pre {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: Consolas, 'Courier New', monospace;
+        }
+
+        .productions {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Грамматика строковых констант в языке Rust</h1>
+
+<h2>Продукции (P)</h2>
+<pre class="productions">
+‹Const› → const<Id>
+‹Id› → _‹IdRem›
+‹Id› → ‹Letter›‹IdRem›
+‹IdRem› → ‹Letter›‹IdRem›
+‹IdRem› → ‹Digit›‹IdRem›
+‹IdRem› → _‹IdRem›
+‹IdRem› → :‹LinkType›
+‹LinkType› → &‹StrType›
+‹StrType› → str‹Equal›
+‹Equal› → =‹String›
+‹String› → “‹StringRem›;
+‹StringRem› → \”‹StringRem›
+‹StringRem› → ‹Symbol›‹StringRem›
+‹StringRem› → ”‹EndOperator›
+‹EndOperator› → ;‹End›
+‹End› → ε
+</pre>
+
+<h2>Алфавиты (VT и VN)</h2>
+<p>
+    <strong>Терминальные символы (VT)</strong>: const, a, b, c, ..., z, A, B, C, ..., Z, 0, 1, 2, ..., 9, _, :, &, str,
+    =, ", ;, !, @, #, $, %, ^, *, (, ), -, +, {, }, [, ], ', <, >, ,, ., ?, /, \, |, ~, \``, "`.
+</p>
+
+<p>
+    <strong>Нетерминальные символы (VN)</strong>: ‹Const›, ‹Id›, ‹IdRem›, ‹LinkType›, ‹StrType›, ‹Equal›, ‹String›,
+    ‹StringRem›, ‹EndOperator›, ‹Digit›, ‹Letter›, ‹Symbol›.
+</p>
+
+</body>
+</html>

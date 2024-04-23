@@ -40,6 +40,21 @@
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         </EmbeddedResource>
+        <None Remove="HtmlPages\About.html"/>
+        <EmbeddedResource Include="HtmlPages\About.html"/>
+        <None Remove="HtmlPages\AnalysisMethod.html"/>
+        <EmbeddedResource Include="HtmlPages\AnalysisMethod.html"/>
+        <None Remove="HtmlPages\DiagnosticsAndErrorNeutralization.html"/>
+        <None Remove="HtmlPages\Docs.html"/>
+        <EmbeddedResource Include="HtmlPages\Docs.html"/>
+        <None Remove="HtmlPages\FormulationOfTheProblem.html"/>
+        <EmbeddedResource Include="HtmlPages\FormulationOfTheProblem.html"/>
+        <None Remove="HtmlPages\Grammar.html"/>
+        <EmbeddedResource Include="HtmlPages\Grammar.html"/>
+        <None Remove="HtmlPages\GrammarClassification.html"/>
+        <EmbeddedResource Include="HtmlPages\GrammarClassification.html"/>
+        <None Remove="HtmlPages\SourcesList.html"/>
+        <EmbeddedResource Include="HtmlPages\SourcesList.html"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -52,5 +67,9 @@
 
     <ItemGroup>
         <ProjectReference Include="..\CodeAnalysis\CodeAnalysis.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="HtmlPages\DiagnosticsAndErrorNeutralization.html"/>
     </ItemGroup>
 </Project>

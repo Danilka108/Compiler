@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Классификация грамматики</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            color: #555;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        pre {
+            background-color: #eaeaea;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: Consolas, 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Классификация грамматики</h1>
+
+<p>
+    Согласно классификации Хомского, грамматика G[‹Const›] является автоматной.
+    Правила (1)-(14) относятся к классу праворекурсивных продукций (<code>A → aB | a | ε</code>):
+</p>
+
+<pre>
+‹Const› → const<Id>
+‹Id› → _‹IdRem›
+‹Id› → ‹Letter›‹IdRem›
+‹IdRem› → ‹Letter›‹IdRem›
+‹IdRem› → ‹Digit›‹IdRem›
+‹IdRem› → _‹IdRem›
+‹IdRem› → :‹LinkType›
+‹LinkType› → &‹StrType›
+‹StrType› → str‹Equal›
+‹Equal› → =‹String›
+‹String› → “‹StringRem›;
+‹StringRem› → \”‹StringRem›
+‹StringRem› → ‹Symbol›‹StringRem›
+‹StringRem› → ”‹EndOperator›
+    </pre>
+
+<p>
+    Отметим, что правила должны быть либо только леворекурсивными, либо только праворекурсивными. Комбинация тех и
+    других не допускается. Данная грамматика содержит только праворекурсивные продукции (1)-(14), и, следовательно,
+    является полностью автоматной.
+</p>
+
+</body>
+</html>

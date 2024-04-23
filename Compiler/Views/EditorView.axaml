@@ -44,9 +44,9 @@
                         <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
                                             Header="{x:Static lang:Resources.ErrorsFoundColumn}"
                                             Binding="{Binding Found}" />
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.ErrorsTailColumn}"
-                                            Binding="{Binding Tail}" />
+                        <!-- <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}" -->
+                        <!--                     Header="{x:Static lang:Resources.ErrorsTailColumn}" -->
+                        <!--                     Binding="{Binding Tail}" /> -->
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>

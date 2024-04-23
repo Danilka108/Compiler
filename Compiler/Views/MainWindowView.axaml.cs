@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -48,39 +49,44 @@ public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>, IProg
         });
     }
 
-    private void OpenAboutPage()
+    private void OpenAboutPage(object sender, RoutedEventArgs e)
     {
-        OpenBrowserWithHtml(HtmlPages.About);
+        OpenHtmlPage("About.html");
+    }
+
+    private void OpenDocsPage(object sender, RoutedEventArgs e)
+    {
+        OpenHtmlPage("Docs.html");
     }
 
     public void OpenFormulationOfTheProblemPage(object sender, RoutedEventArgs e)
     {
-        OpenBrowserWithHtml(HtmlPages.FormulationOfTheProblem);
+        OpenHtmlPage("FormulationOfTheProblem.html");
     }
 
     private void OpenGrammarPage(object sender, RoutedEventArgs e)
     {
-        OpenBrowserWithHtml(HtmlPages.Grammar);
+        OpenHtmlPage("Grammar.html");
     }
 
     private void OpenGrammarClassificationPage(object sender, RoutedEventArgs e)
     {
-        OpenBrowserWithHtml(HtmlPages.GrammarClassification);
+        OpenHtmlPage("GrammarClassification.html");
     }
 
     private void OpenAnalysisMethodPage(object sender, RoutedEventArgs e)
     {
-        OpenBrowserWithHtml(HtmlPages.AnalysisMethod);
+        OpenHtmlPage("AnalysisMethod.html");
     }
 
     private void OpenDiagnosticAndErrorNeutralization(object sender, RoutedEventArgs e)
     {
-        OpenBrowserWithHtml(HtmlPages.DiagnosticAndErrorNeutralization);
+        OpenHtmlPage("DiagnosticsAndErrorNeutralization.html");
     }
 
     private void OpenSourcesListPage(object sender, RoutedEventArgs e)
     {
-        OpenBrowserWithHtml(HtmlPages.SourcesList);
+        OpenHtmlPage("SourcesList.html");
     }
 
     private void OpenSourceCodePage(object sender, RoutedEventArgs e)
@@ -143,7 +149,20 @@ public partial class MainWindowView : ReactiveWindow<MainWindowViewModel>, IProg
         }
     }
 
-    private void OpenBrowserWithHtml(string htmlContent)
+    private void OpenHtmlPage(string name)
+    {
+        var resourceName = $"Compiler.HtmlPages.{name}";
+        var assembly = Assembly.GetExecutingAssembly();
+
+        using var stream = assembly.GetManifestResourceStream(resourceName);
+        using var reader = new StreamReader(stream);
+
+        var fileContent = reader.ReadToEnd();
+
+        OpenBrowserFromHtmlFile(fileContent);
+    }
+
+    private void OpenBrowserFromHtmlFile(string htmlContent)
     {
         // Создаем временный файл с расширением .html
         var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".html");
