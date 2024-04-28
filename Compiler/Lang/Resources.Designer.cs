@@ -543,6 +543,18 @@ namespace Compiler.Lang {
             }
         }
         
+        public static string StartPositionColumn {
+            get {
+                return ResourceManager.GetString("StartPositionColumn", resourceCulture);
+            }
+        }
+        
+        public static string EndPositionColumn {
+            get {
+                return ResourceManager.GetString("EndPositionColumn", resourceCulture);
+            }
+        }
+        
         public static string CaretPosColumnValue {
             get {
                 return ResourceManager.GetString("CaretPosColumnValue", resourceCulture);
@@ -720,6 +732,12 @@ namespace Compiler.Lang {
         public static string CalculateResultTab {
             get {
                 return ResourceManager.GetString("CalculateResultTab", resourceCulture);
+            }
+        }
+        
+        public static string MatchesTab {
+            get {
+                return ResourceManager.GetString("MatchesTab", resourceCulture);
             }
         }
     }

@@ -273,6 +273,12 @@
     <data name="PositionColumn" xml:space="preserve">
         <value>Position</value>
     </data>
+    <data name="StartPositionColumn" xml:space="preserve">
+        <value>Start position</value>
+    </data>
+    <data name="EndPositionColumn" xml:space="preserve">
+        <value>End position</value>
+    </data>
     <data name="CaretPosColumnValue" xml:space="preserve">
         <value>row {0} col {1}</value>
     </data>
@@ -363,6 +369,9 @@
     </data>
     <data name="CalculateResultTab" xml:space="preserve">
         <value>Result of calculation</value>
+    </data>
+    <data name="MatchesTab" xml:space="preserve">
+        <value>Matches</value>
     </data>
     <!-- <data name="ParsingErrorLexemeExpected" xml:space="preserve"> -->
     <!--     <value>{0} lexeme expected, tail: "{1}"</value> -->

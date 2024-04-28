@@ -1,12 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
+using CodeAnalysis;
 using Compiler.ArithmeticExpr;
 using Compiler.ArithmeticExpr.InfixNotation;
 using ReactiveUI;
@@ -100,7 +103,7 @@ public struct ConfirmSaveParams
     public bool Cancellable { get; init; }
 }
 
-public class EditorViewModel : ViewModelBase
+public partial class EditorViewModel : ViewModelBase
 {
 // static string EXAMPLE_TEXT = """const id: &str = """;
     private static readonly string TextExample = """const ba d: &str = "bad2";""";
@@ -141,54 +144,35 @@ public class EditorViewModel : ViewModelBase
 
     public Interaction<ConfirmSaveParams, ConfirmSaveResult> ConfirmSave { get; } = new();
 
-    public ObservableCollection<EditorErrorViewModel> Errors { get; }
-
-    [Reactive] public bool HasErrors { get; private set; }
-
-    public ObservableCollection<EditorTokenViewModel> Tokens { get; }
-
     private readonly Subject<Unit> _activated = new();
     public IObservable<Unit> Activated => _activated.AsQbservable();
 
-    private int _selectedTokenIndex = -1;
+    [Reactive] public int SelectedVariant { get; set; } = 0;
 
-    private readonly Lexer _lexer = new();
-
-    private readonly Parser _parser = new();
-
-    [Reactive] public string CalculateResult { get; private set; }
-
-    public int SelectedTokenIndex
+    public int SelectedMatchingIndex
     {
-        get => _selectedTokenIndex;
+        get => _selectedMatchingIndex;
         set
         {
-            if (value >= 0 && value < Tokens.Count)
+            if (value >= 0 && value < Matches.Count)
             {
-                var span = Tokens[value].Lexeme.Span;
+                var span = Matches[value].Span;
                 TextEditor?.Select(span.Start, span.End);
             }
 
-            this.RaiseAndSetIfChanged(ref _selectedTokenIndex, value);
+            this.RaiseAndSetIfChanged(ref _selectedMatchingIndex, value);
         }
     }
 
-    private int _selectedErrorIndex = -1;
+    private int _selectedMatchingIndex = -1;
 
-    public int SelectedErrorIndex
-    {
-        get => _selectedErrorIndex;
-        set
-        {
-            if (value >= 0 && value < Errors.Count)
-            {
-                var span = Errors[value].Error.Span;
-                TextEditor?.Select(span.Start, span.End);
-            }
+    public ObservableCollection<EditorMatchViewModel> Matches { get; } = new();
 
-            this.RaiseAndSetIfChanged(ref _selectedErrorIndex, value);
-        }
-    }
+    private readonly Regex _regex5 = Regex5();
+
+    private readonly Regex _regex22 = Regex22();
+
+    private readonly Regex _regex28 = Regex28();
 
     public EditorViewModel(IEditorsSet editorsSet, IFileSaver fileSaver,
         string? filePath, int? untitledIndex)
@@ -218,9 +202,6 @@ public class EditorViewModel : ViewModelBase
                     .Return<IDocument?>(null)
             ).ToPropertyEx(this, vm => vm.CurrentDocument);
 
-        Errors = new ObservableCollection<EditorErrorViewModel>();
-        Tokens = new ObservableCollection<EditorTokenViewModel>();
-
         this
             .WhenAnyValue(vm => vm.CurrentDocument, vm => vm.LatestSavedDocument, vm => vm.FilePath,
                 (currentDocument, latestSavedDocument, _) =>
@@ -242,35 +223,37 @@ public class EditorViewModel : ViewModelBase
     public void Run()
     {
         if (TextEditor is not { } editor) return;
-        var text = editor.Document.Text;
 
-        var lexemes = _lexer.Scan(text).ToArray();
-        var parseResult = _parser.Parse(lexemes);
-
-        var errors = parseResult
-            .Errors
-            .Select(error => new EditorErrorViewModel(editor, error))
-            .ToArray();
-
-        var tokens = lexemes
-            .Select(lexeme => new EditorTokenViewModel(editor, lexeme)).ToArray();
-
-        if (parseResult.Expr != null)
+        MatchCollection regexMatches;
+        if (SelectedVariant == 0)
         {
-            CalculateResult = parseResult.Expr.Calculate(text) is { } calcValue
-                ? calcValue.ToString()
-                : "error, division by zero";
-
-            editor.UpdateText(parseResult.Expr.IntoPostfixNotation(text));
+            regexMatches = _regex5.Matches(editor.Document.Text);
+        }
+        else if (SelectedVariant == 1)
+        {
+            regexMatches = _regex22.Matches(editor.Document.Text);
+        }
+        else if (SelectedVariant == 2)
+        {
+            regexMatches = _regex28.Matches(editor.Document.Text);
+        }
+        else
+        {
+            return;
         }
 
-        HasErrors = errors.Length != 0;
+        var matches = new List<EditorMatchViewModel>();
+        foreach (Match regexMatching in regexMatches)
+        {
+            if (regexMatching.Groups.Count > 0)
+            {
+                matches.Add(new EditorMatchViewModel(editor, regexMatching.Value,
+                    new Span(regexMatching.Index, regexMatching.Index + regexMatching.Length)));
+            }
+        }
 
-        Tokens.Clear();
-        Tokens.AddRange(tokens);
-
-        Errors.Clear();
-        Errors.AddRange(errors);
+        Matches.Clear();
+        Matches.AddRange(matches);
     }
 
     public override bool Equals(object? obj)
@@ -372,4 +355,14 @@ public class EditorViewModel : ViewModelBase
         LatestSavedDocument = TextEditor.Document.CreateSnapshot();
         FilePath = filePath;
     }
+
+    [GeneratedRegex(@"#.*$", RegexOptions.Multiline)]
+    private static partial Regex Regex28();
+
+    [GeneratedRegex(@"[\+-]?[0-9]+(\.[0-9]+)?", RegexOptions.Multiline)]
+    private static partial Regex Regex22();
+
+    [GeneratedRegex(@"(\b4\d{3}-\d{4}-\d{4}-\d{4})|(\b4\d{3} \d{4} \d{4} \d{4})|(\b4\d{15})",
+        RegexOptions.Multiline)]
+    private static partial Regex Regex5();
 }

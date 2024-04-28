@@ -354,4 +354,13 @@
     <data name="CalculateResultTab" xml:space="preserve">
         <value>Результат вычесления</value>
     </data>
+    <data name="MatchesTab" xml:space="preserve">
+        <value>Совпадения</value>
+    </data>
+    <data name="StartPositionColumn" xml:space="preserve">
+        <value>Начало</value>
+    </data>
+    <data name="EndPositionColumn" xml:space="preserve">
+        <value>Конец</value>
+    </data>
 </root>
