@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
 using Compiler.ViewModels;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Compiler.Converters;
 

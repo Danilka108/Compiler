@@ -5,6 +5,7 @@ using System.IO;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -53,7 +54,12 @@ public class Editor : ITextEditor
 {
     internal TextEditor TextEditor { get; }
 
-    public IDocument Document => new EditorDocument(TextEditor.Document);
+
+    public IDocument Document
+    {
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        get => new EditorDocument(TextEditor.Document);
+    }
 
     public event EventHandler<IDocumentChangedEventArgs>? DocumentChanged;
 

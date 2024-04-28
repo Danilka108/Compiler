@@ -279,12 +279,6 @@ namespace Compiler.Lang {
             }
         }
         
-        public static string SelectAllMenuItemHeaderDescription {
-            get {
-                return ResourceManager.GetString("SelectAllMenuItemHeaderDescription", resourceCulture);
-            }
-        }
-        
         public static string SourceCodeMenuItemHeader {
             get {
                 return ResourceManager.GetString("SourceCodeMenuItemHeader", resourceCulture);
@@ -519,6 +513,30 @@ namespace Compiler.Lang {
             }
         }
         
+        public static string ErrorKindExpectedOperand {
+            get {
+                return ResourceManager.GetString("ErrorKindExpectedOperand", resourceCulture);
+            }
+        }
+        
+        public static string ErrorKindExpectedOperator {
+            get {
+                return ResourceManager.GetString("ErrorKindExpectedOperator", resourceCulture);
+            }
+        }
+        
+        public static string ErrorKindExpectedCloseBracket {
+            get {
+                return ResourceManager.GetString("ErrorKindExpectedCloseBracket", resourceCulture);
+            }
+        }
+        
+        public static string ErrorKindExpectedOpenBracket {
+            get {
+                return ResourceManager.GetString("ErrorKindExpectedOpenBracket", resourceCulture);
+            }
+        }
+        
         public static string PositionColumn {
             get {
                 return ResourceManager.GetString("PositionColumn", resourceCulture);
@@ -531,9 +549,45 @@ namespace Compiler.Lang {
             }
         }
         
-        public static string TokensPositionColumn {
+        public static string LexemeTypeNumber {
             get {
-                return ResourceManager.GetString("TokensPositionColumn", resourceCulture);
+                return ResourceManager.GetString("LexemeTypeNumber", resourceCulture);
+            }
+        }
+        
+        public static string LexemeTypePlus {
+            get {
+                return ResourceManager.GetString("LexemeTypePlus", resourceCulture);
+            }
+        }
+        
+        public static string LexemeTypeDash {
+            get {
+                return ResourceManager.GetString("LexemeTypeDash", resourceCulture);
+            }
+        }
+        
+        public static string LexemeTypeAsterisk {
+            get {
+                return ResourceManager.GetString("LexemeTypeAsterisk", resourceCulture);
+            }
+        }
+        
+        public static string LexemeTypeSlash {
+            get {
+                return ResourceManager.GetString("LexemeTypeSlash", resourceCulture);
+            }
+        }
+        
+        public static string LexemeTypeOpenBracket {
+            get {
+                return ResourceManager.GetString("LexemeTypeOpenBracket", resourceCulture);
+            }
+        }
+        
+        public static string LexemeTypeCloseBracket {
+            get {
+                return ResourceManager.GetString("LexemeTypeCloseBracket", resourceCulture);
             }
         }
         
@@ -627,39 +681,15 @@ namespace Compiler.Lang {
             }
         }
         
-        public static string StrTypeExpected {
-            get {
-                return ResourceManager.GetString("StrTypeExpected", resourceCulture);
-            }
-        }
-        
         public static string AssignmentOperatorExpected {
             get {
                 return ResourceManager.GetString("AssignmentOperatorExpected", resourceCulture);
             }
         }
         
-        public static string StringLiteralExpected {
-            get {
-                return ResourceManager.GetString("StringLiteralExpected", resourceCulture);
-            }
-        }
-        
-        public static string OperatorEndExpected {
-            get {
-                return ResourceManager.GetString("OperatorEndExpected", resourceCulture);
-            }
-        }
-        
         public static string NothingExpected {
             get {
                 return ResourceManager.GetString("NothingExpected", resourceCulture);
-            }
-        }
-        
-        public static string SeparatorExpected {
-            get {
-                return ResourceManager.GetString("SeparatorExpected", resourceCulture);
             }
         }
         
@@ -672,6 +702,24 @@ namespace Compiler.Lang {
         public static string InvalidLexeme {
             get {
                 return ResourceManager.GetString("InvalidLexeme", resourceCulture);
+            }
+        }
+        
+        public static string ErrorsDescriptionColumn {
+            get {
+                return ResourceManager.GetString("ErrorsDescriptionColumn", resourceCulture);
+            }
+        }
+        
+        public static string ErrorsPositionColumn {
+            get {
+                return ResourceManager.GetString("ErrorsPositionColumn", resourceCulture);
+            }
+        }
+        
+        public static string CalculateResultTab {
+            get {
+                return ResourceManager.GetString("CalculateResultTab", resourceCulture);
             }
         }
     }

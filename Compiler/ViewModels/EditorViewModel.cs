@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
-using Compiler.ConstExpr;
+using Compiler.ArithmeticExpr;
+using Compiler.ArithmeticExpr.InfixNotation;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Unit = System.Reactive.Unit;
@@ -152,7 +154,9 @@ public class EditorViewModel : ViewModelBase
 
     private readonly Lexer _lexer = new();
 
-    private readonly Analyzer _analyzer = new();
+    private readonly Parser _parser = new();
+
+    [Reactive] public string CalculateResult { get; private set; }
 
     public int SelectedTokenIndex
     {
@@ -238,15 +242,27 @@ public class EditorViewModel : ViewModelBase
     public void Run()
     {
         if (TextEditor is not { } editor) return;
+        var text = editor.Document.Text;
 
-        var lexemes = _lexer.Scan(editor.Document.Text).ToArray();
-        var errors = _analyzer
-            .Analyze(lexemes)
+        var lexemes = _lexer.Scan(text).ToArray();
+        var parseResult = _parser.Parse(lexemes);
+
+        var errors = parseResult
+            .Errors
             .Select(error => new EditorErrorViewModel(editor, error))
             .ToArray();
 
         var tokens = lexemes
             .Select(lexeme => new EditorTokenViewModel(editor, lexeme)).ToArray();
+
+        if (parseResult.Expr != null)
+        {
+            CalculateResult = parseResult.Expr.Calculate(text) is { } calcValue
+                ? calcValue.ToString()
+                : "error, division by zero";
+
+            editor.UpdateText(parseResult.Expr.IntoPostfixNotation(text));
+        }
 
         HasErrors = errors.Length != 0;
 
@@ -255,48 +271,6 @@ public class EditorViewModel : ViewModelBase
 
         Errors.Clear();
         Errors.AddRange(errors);
-
-
-        //         CaretPos = editor.OffsetToCaretPos(error.Span.Start),
-        //         Error = error,
-        //         Span = error.Span
-
-        // // var scanner = new Scanner<TokenType, TokenError>(editor.Document.Text, TokensScanners.TokenScanners);
-        // var lexemes = Lexer.Scan(editor.Document.Text).ToArray();
-        //
-        // // var parseErrors = Parser.Parser.Scan(editor.Document.Text).ToArray();
-        // var lexemes2 = Parsing.Lexing.Lexer.Scan(editor.Document.Text).ToArray();
-        //
-        // var tokenViewModels = lexemes.Select(lexeme =>
-        //     new EditorTokenViewModel(editor.OffsetToCaretPos(lexeme.Span.Start), lexeme, editor.Document.Text));
-        //
-        // var parseErrors = Parsing.Parser<Parsing.State>.Parse(lexemes2);
-        //
-        // // var errorViewModels = lexemes
-        // //     .OfType<Lexeme.Invalid>()
-        // var errorViewModels = parseErrors
-        //     .Select(error => new EditorErrorViewModel(editor.Document.Text)
-        //     {
-        //         CaretPos = editor.OffsetToCaretPos(error.Span.Start),
-        //         Error = error,
-        //         Span = error.Span
-        //     }).ToArray();
-        //
-        // // var parseErrorViewModels = parseErrors.Select(error =>
-        // //     new EditorParseErrorViewModel
-        // //         { ErrorType = error.Type, CaretPos = editor.OffsetToCaretPos(error.Span.Start), Span = error.Span }
-        // // );
-
-        // HasErrors = errorViewModels.Length != 0;
-        //
-        // Tokens.Clear();
-        // Tokens.AddRange(tokenViewModels);
-        //
-        // Errors.Clear();
-        // Errors.AddRange(errors);
-
-        // ParseErrors.Clear();
-        // ParseErrors.AddRange(parseErrorViewModels);
     }
 
     public override bool Equals(object? obj)

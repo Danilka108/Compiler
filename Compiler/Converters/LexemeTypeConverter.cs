@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Compiler.ConstExpr;
+using Compiler.ArithmeticExpr;
 
 namespace Compiler.Converters;
 
@@ -12,20 +12,15 @@ public class LexemeTypeConverter : IValueConverter
     public static readonly IDictionary<LexemeType, string> LexemeTypes =
         new Dictionary<LexemeType, string>
         {
-            { LexemeType.ConstKeyword, Lang.Resources.LexemeTypeConstKeyword },
-            { LexemeType.Identifier, Lang.Resources.LexemeTypeIdentifier },
-            { LexemeType.Colon, Lang.Resources.LexemeTypeColon },
-            { LexemeType.Ampersand, Lang.Resources.LexemeTypeAmpersand },
-            { LexemeType.StrKeyword, Lang.Resources.LexemeTypeStrKeyword },
-            { LexemeType.Equal, Lang.Resources.LexemeTypeEqual },
-            { LexemeType.StringLiteral, Lang.Resources.LexemeTypeStringLiteral },
-            {
-                LexemeType.UnterminatedStringLiteral,
-                Lang.Resources.LexemeTypeUnterminatedStringLiteral
-            },
-            { LexemeType.Semicolon, Lang.Resources.LexemeTypeSemicolon },
-            { LexemeType.Separator, Lang.Resources.LexemeTypeSeparator },
+            { LexemeType.Number, Lang.Resources.LexemeTypeNumber },
+            { LexemeType.Plus, Lang.Resources.LexemeTypePlus },
+            { LexemeType.Dash, Lang.Resources.LexemeTypeDash },
+            { LexemeType.Asterisk, Lang.Resources.LexemeTypeAsterisk },
+            { LexemeType.Slash, Lang.Resources.LexemeTypeSlash },
+            { LexemeType.CloseBracket, Lang.Resources.LexemeTypeCloseBracket },
+            { LexemeType.OpenBracket, Lang.Resources.LexemeTypeOpenBracket },
             { LexemeType.UnexpectedSymbol, Lang.Resources.LexemeTypeUnexpectedSymbol },
+            { LexemeType.Separator, Lang.Resources.LexemeTypeSeparator },
         };
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

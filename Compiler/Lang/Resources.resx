@@ -140,9 +140,6 @@
     <data name="SelectAllMenuItemHeader" xml:space="preserve">
         <value>Select all</value>
     </data>
-    <data name="SelectAllMenuItemHeaderDescription" xml:space="preserve">
-        <value>Select all text</value>
-    </data>
     <data name="SourceCodeMenuItemHeader" xml:space="preserve">
         <value>Source code</value>
     </data>
@@ -249,7 +246,7 @@
         <value>Expected lexeme</value>
     </data>
     <data name="ErrorKindInvalidLexeme" xml:space="preserve">
-        <value>Invalid Lexeme {0}</value>
+        <value>Unexpected symbol {0}</value>
     </data>
     <data name="ErrorKindNotFound" xml:space="preserve">
         <value>Not Found</value>
@@ -260,6 +257,18 @@
     <data name="ErrorKindExhausted" xml:space="preserve">
         <value>Lexemes Exhausted</value>
     </data>
+    <data name="ErrorKindExpectedOperand" xml:space="preserve">
+        <value>Expected operand</value>
+    </data>
+    <data name="ErrorKindExpectedOperator" xml:space="preserve">
+        <value>Expected operator</value>
+    </data>
+    <data name="ErrorKindExpectedCloseBracket" xml:space="preserve">
+        <value>Expected close bracket</value>
+    </data>
+    <data name="ErrorKindExpectedOpenBracket" xml:space="preserve">
+        <value>Expected open bracket</value>
+    </data>
 
     <data name="PositionColumn" xml:space="preserve">
         <value>Position</value>
@@ -267,9 +276,28 @@
     <data name="CaretPosColumnValue" xml:space="preserve">
         <value>row {0} col {1}</value>
     </data>
-    <data name="TokensPositionColumn" xml:space="preserve">
-        <value>Position</value>
+    <data name="LexemeTypeNumber" xml:space="preserve">
+        <value>Number</value>
     </data>
+    <data name="LexemeTypePlus" xml:space="preserve">
+        <value>Plus</value>
+    </data>
+    <data name="LexemeTypeDash" xml:space="preserve">
+        <value>Dash</value>
+    </data>
+    <data name="LexemeTypeAsterisk" xml:space="preserve">
+        <value>Asterisk</value>
+    </data>
+    <data name="LexemeTypeSlash" xml:space="preserve">
+        <value>Slash</value>
+    </data>
+    <data name="LexemeTypeOpenBracket" xml:space="preserve">
+        <value>Open Bracket</value>
+    </data>
+    <data name="LexemeTypeCloseBracket" xml:space="preserve">
+        <value>Close Bracket</value>
+    </data>
+
     <data name="LexemeTypeConstKeyword" xml:space="preserve">
         <value>Const keyword</value>
     </data>
@@ -292,7 +320,7 @@
         <value>String literal</value>
     </data>
     <data name="LexemeTypeSemicolon" xml:space="preserve">
-        <value>Operator end</value>
+        <value>Semicolon</value>
     </data>
     <data name="LexemeTypeSeparator" xml:space="preserve">
         <value>Separator</value>
@@ -315,29 +343,26 @@
     <data name="LinkExpected" xml:space="preserve">
         <value>expected link</value>
     </data>
-    <data name="StrTypeExpected" xml:space="preserve">
-        <value>expected str type</value>
-    </data>
     <data name="AssignmentOperatorExpected" xml:space="preserve">
         <value>expected assignment operator</value>
     </data>
-    <data name="StringLiteralExpected" xml:space="preserve">
-        <value>expected string literal</value>
-    </data>
-    <data name="OperatorEndExpected" xml:space="preserve">
-        <value>expected operator end</value>
-    </data>
     <data name="NothingExpected" xml:space="preserve">
         <value>nothing expected</value>
-    </data>
-    <data name="SeparatorExpected" xml:space="preserve">
-        <value>separator expected</value>
     </data>
     <data name="ParseErrorsTab" xml:space="preserve">
         <value>Parse errors</value>
     </data>
     <data name="InvalidLexeme" xml:space="preserve">
         <value>invalid lexeme</value>
+    </data>
+    <data name="ErrorsDescriptionColumn" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="ErrorsPositionColumn" xml:space="preserve">
+        <value>Position</value>
+    </data>
+    <data name="CalculateResultTab" xml:space="preserve">
+        <value>Result of calculation</value>
     </data>
     <!-- <data name="ParsingErrorLexemeExpected" xml:space="preserve"> -->
     <!--     <value>{0} lexeme expected, tail: "{1}"</value> -->

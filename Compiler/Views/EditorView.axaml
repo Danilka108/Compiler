@@ -39,9 +39,6 @@
                                             Header="{x:Static lang:Resources.ErrorsKindColumn}"
                                             Binding="{Binding Error, Converter={StaticResource ErrorConverter}}" />
                         <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.ErrorsExpectedLexemeColumn}"
-                                            Binding="{ReflectionBinding LexemeType, Converter={StaticResource LexemeTypeConverter}}" />
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
                                             Header="{x:Static lang:Resources.ErrorsFoundColumn}"
                                             Binding="{Binding Found}" />
                         <!-- <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}" -->
@@ -49,6 +46,9 @@
                         <!--                     Binding="{Binding Tail}" /> -->
                     </DataGrid.Columns>
                 </DataGrid>
+            </TabItem>
+            <TabItem Header="{x:Static lang:Resources.CalculateResultTab}">
+                <TextBlock Margin="0 4 0 0" FontSize="{Binding EditorsSet.FontSize}" Text="{Binding CalculateResult}" />
             </TabItem>
             <TabItem Header="{x:Static lang:Resources.LexemesTab}">
                 <DataGrid SelectedIndex="{Binding SelectedTokenIndex}" Margin="0 4 0 0"
