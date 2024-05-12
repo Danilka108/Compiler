@@ -233,6 +233,9 @@
     <data name="ErrorsTab" xml:space="preserve">
         <value>Errors</value>
     </data>
+    <data name="ResultTab" xml:space="preserve">
+        <value>Result</value>
+    </data>
     <data name="ErrorsTailColumn" xml:space="preserve">
         <value>Tail</value>
     </data>

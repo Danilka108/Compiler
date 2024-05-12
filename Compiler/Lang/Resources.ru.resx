@@ -216,6 +216,9 @@
     <data name="CallDocsItemHeaderDescription" xml:space="preserve">
         <value>Показать окно документации</value>
     </data>
+    <data name="ResultTab" xml:space="preserve">
+        <value>Результат</value>
+    </data>
     <data name="AboutProgramItemHeaderDescription" xml:space="preserve">
         <value>Показать информацию о программе</value>
     </data>

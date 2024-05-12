@@ -465,6 +465,12 @@ namespace Compiler.Lang {
             }
         }
         
+        public static string ResultTab {
+            get {
+                return ResourceManager.GetString("ResultTab", resourceCulture);
+            }
+        }
+        
         public static string ErrorsTailColumn {
             get {
                 return ResourceManager.GetString("ErrorsTailColumn", resourceCulture);

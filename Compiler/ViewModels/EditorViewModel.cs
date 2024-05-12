@@ -150,45 +150,9 @@ public class EditorViewModel : ViewModelBase
     private readonly Subject<Unit> _activated = new();
     public IObservable<Unit> Activated => _activated.AsQbservable();
 
-    private int _selectedTokenIndex = -1;
 
-    private readonly Lexer _lexer = new();
+    [Reactive] public string Result { get; private set; } = "";
 
-    private readonly Parser _parser = new();
-
-    [Reactive] public string CalculateResult { get; private set; }
-
-    public int SelectedTokenIndex
-    {
-        get => _selectedTokenIndex;
-        set
-        {
-            if (value >= 0 && value < Tokens.Count)
-            {
-                var span = Tokens[value].Lexeme.Span;
-                TextEditor?.Select(span.Start, span.End);
-            }
-
-            this.RaiseAndSetIfChanged(ref _selectedTokenIndex, value);
-        }
-    }
-
-    private int _selectedErrorIndex = -1;
-
-    public int SelectedErrorIndex
-    {
-        get => _selectedErrorIndex;
-        set
-        {
-            if (value >= 0 && value < Errors.Count)
-            {
-                var span = Errors[value].Error.Span;
-                TextEditor?.Select(span.Start, span.End);
-            }
-
-            this.RaiseAndSetIfChanged(ref _selectedErrorIndex, value);
-        }
-    }
 
     public EditorViewModel(IEditorsSet editorsSet, IFileSaver fileSaver,
         string? filePath, int? untitledIndex)
@@ -244,33 +208,10 @@ public class EditorViewModel : ViewModelBase
         if (TextEditor is not { } editor) return;
         var text = editor.Document.Text;
 
-        var lexemes = _lexer.Scan(text).ToArray();
-        var parseResult = _parser.Parse(lexemes);
-
-        var errors = parseResult
-            .Errors
-            .Select(error => new EditorErrorViewModel(editor, error))
-            .ToArray();
-
-        var tokens = lexemes
-            .Select(lexeme => new EditorTokenViewModel(editor, lexeme)).ToArray();
-
-        if (parseResult.Expr != null)
-        {
-            CalculateResult = parseResult.Expr.Calculate(text) is { } calcValue
-                ? calcValue.ToString()
-                : "error, division by zero";
-
-            editor.UpdateText(parseResult.Expr.IntoPostfixNotation(text));
-        }
-
-        HasErrors = errors.Length != 0;
-
-        Tokens.Clear();
-        Tokens.AddRange(tokens);
-
-        Errors.Clear();
-        Errors.AddRange(errors);
+        var lexer = new UnsignedNumber.Lexer();
+        var lexemes = lexer.Scan(text).ToArray();
+        var result = new UnsignedNumber.Parser().Parse(lexemes);
+        Result = result;
     }
 
     public override bool Equals(object? obj)

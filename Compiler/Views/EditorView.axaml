@@ -24,51 +24,8 @@
         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" />
         <TabControl assists:TabControlAssist.TabHeaderHorizontalAlignment="Left" AutoScrollToSelectedItem="True"
                     Theme="{StaticResource ScrollableTabControl}" Grid.Row="2">
-            <TabItem Header="{x:Static lang:Resources.ErrorsTab}">
-                <DataGrid Margin="0 4 0 0" VerticalScrollBarVisibility="Auto" IsReadOnly="True"
-                          CanUserReorderColumns="False"
-                          CanUserResizeColumns="True"
-                          CanUserSortColumns="False"
-                          SelectedIndex="{Binding SelectedErrorIndex}"
-                          ItemsSource="{Binding Errors}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.PositionColumn}"
-                                            Binding="{Binding CaretPos, Converter={StaticResource CaretPosConverter}}" />
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.ErrorsKindColumn}"
-                                            Binding="{Binding Error, Converter={StaticResource ErrorConverter}}" />
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.ErrorsFoundColumn}"
-                                            Binding="{Binding Found}" />
-                        <!-- <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}" -->
-                        <!--                     Header="{x:Static lang:Resources.ErrorsTailColumn}" -->
-                        <!--                     Binding="{Binding Tail}" /> -->
-                    </DataGrid.Columns>
-                </DataGrid>
-            </TabItem>
-            <TabItem Header="{x:Static lang:Resources.CalculateResultTab}">
-                <TextBlock Margin="0 4 0 0" FontSize="{Binding EditorsSet.FontSize}" Text="{Binding CalculateResult}" />
-            </TabItem>
-            <TabItem Header="{x:Static lang:Resources.LexemesTab}">
-                <DataGrid SelectedIndex="{Binding SelectedTokenIndex}" Margin="0 4 0 0"
-                          VerticalScrollBarVisibility="Auto" IsReadOnly="True"
-                          CanUserReorderColumns="False"
-                          CanUserResizeColumns="True"
-                          CanUserSortColumns="False"
-                          ItemsSource="{Binding Tokens}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.PositionColumn}"
-                                            Binding="{Binding CaretPos, Converter={StaticResource CaretPosConverter}}" />
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.LexemesLexemeTypeColumn}"
-                                            Binding="{Binding Lexeme.Type, Converter={StaticResource LexemeTypeConverter}}" />
-                        <DataGridTextColumn FontSize="{Binding EditorsSet.FontSize}"
-                                            Header="{x:Static lang:Resources.LexemesValueColumn}"
-                                            Binding="{Binding Value}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+            <TabItem Header="{x:Static lang:Resources.ResultTab}">
+                <TextBlock Text="{Binding Result}" />
             </TabItem>
         </TabControl>
         <StackPanel Margin="10" HorizontalAlignment="Right" Grid.Row="3" Orientation="Horizontal">
