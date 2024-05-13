@@ -1,3 +1,4 @@
+using System;
 using CodeAnalysis;
 
 namespace Compiler.UnsignedNumber;
@@ -9,6 +10,7 @@ public enum LexemeType
     Dash,
     Dot,
     Ten,
+    Separator,
     UnexpectedSymbol,
 }
 
@@ -21,6 +23,7 @@ public class Lexer() : Lexer<LexemeType>(new LexemeUtils(), Eaters)
         TryEatDot,
         TryEatTen,
         TryEatDigit,
+        TryEatSeparator,
     ];
 
     private static LexemeType? TryEatDigit(Eater eater)
@@ -47,6 +50,19 @@ public class Lexer() : Lexer<LexemeType>(new LexemeUtils(), Eaters)
     {
         return eater.Eat("10") ? LexemeType.Ten : null;
     }
+
+    private static LexemeType? TryEatSeparator(Eater eater)
+    {
+        return eater.EatWhile(IsSeparator) ? LexemeType.Separator : null;
+    }
+
+    private static bool IsSeparator(char sym, char? nextSym)
+    {
+        // TODO fix
+        return char.IsSeparator(sym)
+               || $"{sym}" == Environment.NewLine
+               || (nextSym is { } n && $"{sym}{n}" == Environment.NewLine);
+    }
 }
 
 public class LexemeUtils : ILexemeUtils<LexemeType>
@@ -58,8 +74,7 @@ public class LexemeUtils : ILexemeUtils<LexemeType>
 
     public bool IsIgnorableLexeme(LexemeType lexeme)
     {
-        return false;
-        // return lexeme is LexemeType.Separator;
+        return lexeme is LexemeType.Separator;
     }
 
     public bool RemoveInvalidLexeme(LexemeType lexeme)
@@ -81,6 +96,7 @@ public class LexemeUtils : ILexemeUtils<LexemeType>
             LexemeType.Plus => "+",
             LexemeType.Dash => "-",
             LexemeType.Ten => "10",
+            LexemeType.Separator => " ",
             LexemeType.UnexpectedSymbol => "@",
         };
     }

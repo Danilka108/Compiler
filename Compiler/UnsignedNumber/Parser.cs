@@ -61,7 +61,7 @@ public class Parser
 {
     public string Parse(IEnumerable<Lexeme<LexemeType>> lexemes)
     {
-        var state = new State(lexemes);
+        var state = new State(lexemes.Where(l => l.Type != LexemeType.Separator));
         return UnsignedNumber(state) ? state.ToString() : "";
     }
 
